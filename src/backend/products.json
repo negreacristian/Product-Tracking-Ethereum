@@ -1,0 +1,74 @@
+[
+  {
+    "serialNumber": "asfd",
+    "name": "asdf",
+    "brand": "asdf",
+    "description": "asdf",
+    "lot": "asdf",
+    "image": "1717607535412.png",
+    "pdf": "1717607535412.pdf"
+  },
+  {
+    "serialNumber": "Incredibil",
+    "name": "Inimaginabil",
+    "brand": "Extraordinar",
+    "description": "Genial",
+    "lot": "asdfasd",
+    "image": "1717607570182.jpg",
+    "pdf": "1717607570194.pdf"
+  },
+  {
+    "serialNumber": "123",
+    "name": "or",
+    "brand": "as",
+    "description": "asdf",
+    "lot": "asdf",
+    "image": "1717662151770.jpg",
+    "pdf": "1717662151796.pdf"
+  },
+  {
+    "serialNumber": "1234",
+    "name": "54",
+    "brand": "rfg",
+    "description": "asdf",
+    "lot": "asd",
+    "image": "1717662379729.jpg",
+    "pdf": "1717662379753.pdf"
+  },
+  {
+    "serialNumber": "dap",
+    "name": "asdf",
+    "brand": "asdf",
+    "description": "asdf",
+    "lot": "aasd",
+    "image": null,
+    "pdf": null
+  },
+  {
+    "serialNumber": "primul",
+    "name": "saf",
+    "brand": "sadf",
+    "description": "asd",
+    "lot": "sadf",
+    "image": null,
+    "pdf": null
+  },
+  {
+    "serialNumber": "1945",
+    "name": "Moutain Bike",
+    "brand": "Trek",
+    "description": "sdafasdf",
+    "lot": "1",
+    "image": "1717666440065.jpg",
+    "pdf": null
+  },
+  {
+    "serialNumber": "UNu",
+    "name": "asdf",
+    "brand": "jij",
+    "description": "dfgh",
+    "lot": "mlkj",
+    "image": "1717672273483.png",
+    "pdf": null
+  }
+]
