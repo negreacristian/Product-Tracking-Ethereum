@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Home from './components/Home';
 import Login from './components/Login';
@@ -8,19 +8,58 @@ import Verifier from './components/Verifier';
 import PrivateRoute from './components/PrivateRoute';
 import Profile from './components/Profile';
 import AddProduct from './components/AddProduct';
-import Product from './components/Product'; 
+import Product from './components/Product';
 import AllProducts from './components/AllProducts';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css'; 
+import '@fortawesome/fontawesome-free/css/all.min.css'; 
+import axios from 'axios';
 
 const App = () => {
   const [jwt, setJwt] = useState(null);
   const [role, setRole] = useState(null);
+  const [loading, setLoading] = useState(true); // Add a loading state
+
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      setJwt(token);
+      const decodedToken = JSON.parse(atob(token.split('.')[1]));
+      setRole(decodedToken.role);
+    }
+    setLoading(false); // Set loading to false after checking the token
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (jwt) {
+        axios.post('http://localhost:5000/refresh-token', {}, {
+          headers: {
+            'Authorization': `Bearer ${jwt}`
+          }
+        })
+        .then(response => {
+          const { jwtToken } = response.data;
+          localStorage.setItem('authToken', jwtToken);
+          setJwt(jwtToken);
+        })
+        .catch(error => console.error('Error refreshing token:', error));
+      }
+    }, 4 * 60 * 1000); // Refresh token every 4 minutes
+
+    return () => clearInterval(interval);
+  }, [jwt]);
 
   const handleLogout = () => {
     setJwt(null);
     setRole(null);
     localStorage.removeItem('authToken');
+    localStorage.removeItem('connectedMetaMaskAccount'); // Clear MetaMask connection status
   };
+
+  if (loading) {
+    return <div>Loading...</div>; // Show loading while checking the token
+  }
 
   return (
     <Router>
@@ -35,7 +74,7 @@ const App = () => {
               <Route path="/" element={<Deployer jwt={jwt} handleLogout={handleLogout} />} />
               <Route path="profile" element={<Profile role="Deployer" />} />
               <Route path="add-product" element={<AddProduct />} />
-              <Route path="all-products" element={<AllProducts />} /> {/* Add route for AllProducts */}
+              <Route path="all-products" element={<AllProducts />} />
             </Routes>
           </PrivateRoute>
         } />
@@ -49,8 +88,8 @@ const App = () => {
           </PrivateRoute>
         } />
 
-        <Route path="/product/:serialNumber" element={<Product />} /> {/* New ProductPage Route */}
-        
+        <Route path="/product/:serialNumber" element={<Product />} />
+
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>

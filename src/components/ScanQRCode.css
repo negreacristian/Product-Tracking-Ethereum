@@ -1,8 +1,9 @@
 .logo {
-    height: 250px;
+    height: 120px;
     display: block;
     margin: 0 auto;
   }
+  
   
   .back-button {
     position: absolute;
@@ -26,4 +27,3 @@
     align-items: center;
     height: calc(100vh - 250px); /* Adjust according to the size of the elements above */
   }
-  

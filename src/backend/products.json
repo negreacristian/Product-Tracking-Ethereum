@@ -1,59 +1,5 @@
 [
   {
-    "serialNumber": "asfd",
-    "name": "asdf",
-    "brand": "asdf",
-    "description": "asdf",
-    "lot": "asdf",
-    "image": "1717607535412.png",
-    "pdf": "1717607535412.pdf"
-  },
-  {
-    "serialNumber": "Incredibil",
-    "name": "Inimaginabil",
-    "brand": "Extraordinar",
-    "description": "Genial",
-    "lot": "asdfasd",
-    "image": "1717607570182.jpg",
-    "pdf": "1717607570194.pdf"
-  },
-  {
-    "serialNumber": "123",
-    "name": "or",
-    "brand": "as",
-    "description": "asdf",
-    "lot": "asdf",
-    "image": "1717662151770.jpg",
-    "pdf": "1717662151796.pdf"
-  },
-  {
-    "serialNumber": "1234",
-    "name": "54",
-    "brand": "rfg",
-    "description": "asdf",
-    "lot": "asd",
-    "image": "1717662379729.jpg",
-    "pdf": "1717662379753.pdf"
-  },
-  {
-    "serialNumber": "dap",
-    "name": "asdf",
-    "brand": "asdf",
-    "description": "asdf",
-    "lot": "aasd",
-    "image": null,
-    "pdf": null
-  },
-  {
-    "serialNumber": "primul",
-    "name": "saf",
-    "brand": "sadf",
-    "description": "asd",
-    "lot": "sadf",
-    "image": null,
-    "pdf": null
-  },
-  {
     "serialNumber": "1945",
     "name": "Moutain Bike",
     "brand": "Trek",
@@ -63,12 +9,39 @@
     "pdf": null
   },
   {
-    "serialNumber": "UNu",
-    "name": "asdf",
-    "brand": "jij",
-    "description": "dfgh",
-    "lot": "mlkj",
-    "image": "1717672273483.png",
+    "serialNumber": "1712349712341",
+    "name": "Bike Electric",
+    "brand": "Ali Express",
+    "description": "Bicicleta electrica",
+    "lot": "123801",
+    "image": "1717768498887.jpeg",
+    "pdf": null
+  },
+  {
+    "serialNumber": "4654321354",
+    "name": "BMX",
+    "brand": "DK",
+    "description": "Descriere pt BMX",
+    "lot": "asadf2asdq23",
+    "image": "1717768827808.jpg",
+    "pdf": "1717768827813.pdf"
+  },
+  {
+    "serialNumber": "23452345",
+    "name": "Bike copii",
+    "brand": "KIDS HAPPY",
+    "description": "Bicicleta pentru copii",
+    "lot": "6554",
+    "image": "1717771863157.gif",
+    "pdf": null
+  },
+  {
+    "serialNumber": "qwerqwer",
+    "name": "Bicicleta",
+    "brand": "asdf",
+    "description": "asdf",
+    "lot": "asdf",
+    "image": "1717772861228.jpg",
     "pdf": null
   }
 ]

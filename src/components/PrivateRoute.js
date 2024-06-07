@@ -1,11 +1,10 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 
-const PrivateRoute = ({ children, jwt, role, requiredRole }) => {
+const PrivateRoute = ({ jwt, role, requiredRole, children }) => {
   if (!jwt || role !== requiredRole) {
     return <Navigate to="/login" />;
   }
-
   return children;
 };
 

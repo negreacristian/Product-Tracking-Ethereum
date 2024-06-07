@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { connectMetaMask } from '../utils/metamask';
 import { fetchDeployerData } from '../utils/fetchData';
-
+import logo from '../assets/logo.png'
 const Deployer = ({ jwt, handleLogout }) => {
   const [account, setAccount] = useState(null);
   const [error, setError] = useState('');
@@ -21,10 +21,38 @@ const Deployer = ({ jwt, handleLogout }) => {
     getData();
   }, []);
 
+  useEffect(() => {
+    const connectedAccount = localStorage.getItem('connectedMetaMaskAccount');
+    if (connectedAccount) {
+      setAccount(connectedAccount);
+    }
+
+    const handleAccountsChanged = (accounts) => {
+      if (accounts.length > 0) {
+        setAccount(accounts[0]);
+        localStorage.setItem('connectedMetaMaskAccount', accounts[0]);
+      } else {
+        setAccount(null);
+        localStorage.removeItem('connectedMetaMaskAccount');
+      }
+    };
+
+    if (window.ethereum) {
+      window.ethereum.on('accountsChanged', handleAccountsChanged);
+    }
+
+    return () => {
+      if (window.ethereum) {
+        window.ethereum.removeListener('accountsChanged', handleAccountsChanged);
+      }
+    };
+  }, []);
+
   const handleConnectMetaMask = async () => {
     try {
       const connectedAccount = await connectMetaMask();
       setAccount(connectedAccount);
+      localStorage.setItem('connectedMetaMaskAccount', connectedAccount);
       setError('');
     } catch (err) {
       setError(err.message);
@@ -45,6 +73,14 @@ const Deployer = ({ jwt, handleLogout }) => {
 
   return (
     <div className="container mt-5">
+          <button
+          className="btn btn-outline-secondary back-button" onClick={() => navigate(-1)}>
+          <i className="bi bi-arrow-left"></i>
+        </button>
+        <div className="position-relative mb-3">
+    
+    <img src={logo} alt="Logo" className="logo" />
+  </div>
       <h1>Deployer Page</h1>
       {jwt ? (
         <>

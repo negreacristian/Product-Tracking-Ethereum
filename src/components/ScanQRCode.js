@@ -31,14 +31,16 @@ const ScanQRCode = () => {
 
   return (
     <div>
-    <div className="container mt-5 text-center">
-      <div className="position-relative mb-3">
-        <button
+       <button
           className="btn btn-outline-secondary back-button"
           onClick={() => navigate(-1)}
         >
           <i className="bi bi-arrow-left"></i>
         </button>
+    <div className="container mt-5 text-center">
+   
+      <div className="position-relative mb-3">
+    
         <img src={logo} alt="Logo" className="logo" />
       </div>
       <div className="card-container">

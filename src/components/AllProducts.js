@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { fetchAllProducts } from '../utils/fetchData'; // Ensure this function is implemented
 import './AllProducts.css'; // Create and style this CSS file as needed
-
+import { useNavigate } from 'react-router-dom';
+import logo from '../assets/logo.png';
 const AllProducts = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -33,6 +35,13 @@ const AllProducts = () => {
 
   return (
     <div className="container mt-5">
+            <button
+          className="btn btn-outline-secondary back-button" onClick={() => navigate(-1)}>
+          <i className="bi bi-arrow-left"></i>
+        </button>
+        <div className="position-relative mb-3">  
+        <img src={logo} alt="Logo" className="logo" />
+        </div>
       <h1 className="text-center">All Products</h1>
       <div className="row">
         {products.map((product) => (

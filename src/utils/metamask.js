@@ -1,19 +1,13 @@
-// src/utils/metamask.js
-import detectEthereumProvider from '@metamask/detect-provider';
-
 export const connectMetaMask = async () => {
-  const provider = await detectEthereumProvider();
-
-  if (provider) {
+  if (window.ethereum) {
     try {
-      const accounts = await provider.request({ method: 'eth_requestAccounts' });
-      return accounts[0]; // return the first account
+      // Request account access
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      return accounts[0];
     } catch (error) {
-      console.error('User denied account access');
-      throw new Error('User denied account access');
+      throw new Error('MetaMask connection failed');
     }
   } else {
-    console.error('Please install MetaMask!');
-    throw new Error('Please install MetaMask');
+    throw new Error('MetaMask is not installed');
   }
 };

@@ -7,11 +7,6 @@
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
 
 .App-header {
   background-color: #282c34;
@@ -44,12 +39,51 @@
 }
 
 .container {
+  margin-top: 0px;
   flex: 1;
+  
 }
-.footer {
- padding-top: 0;
+
+.footer{
+  
+    width: 100%;
+    bottom: 0;
 }
+
+
 body, html {
   height: 100%;
   margin: 0;
+}
+
+
+.back-button {
+  position: absolute;
+  left: 20px; /* Adjust this value as needed */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000; /* Ensure it is above other content */
+}
+
+.back-button i {
+  font-size: 1.2em; /* Adjust the icon size as needed */
+}
+.card {
+  width: auto;
+  max-width: 600px; /* Adjust as needed */
+  margin: 2rem auto;
+  padding: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  border: none;
+}
+.card h2 {
+  margin-top: 0;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }

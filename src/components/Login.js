@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './Login.css'; // Import custom CSS for styling
+import './Login.css'; 
+import logo from '../assets/logo.png';
 
 const Login = ({ setJwt, setRole }) => {
   const [token, setToken] = useState('');
@@ -17,6 +18,9 @@ const Login = ({ setJwt, setRole }) => {
       setJwt(jwtToken);
       setRole(decodedToken.role);
 
+      // Store the token in localStorage
+      localStorage.setItem('authToken', jwtToken);
+
       if (decodedToken.role === 'deployer') {
         navigate('/deployer');
       } else if (decodedToken.role === 'verifier') {
@@ -28,7 +32,17 @@ const Login = ({ setJwt, setRole }) => {
   };
 
   return (
+    <div><button
+    className="btn btn-outline-secondary back-button" onClick={() => navigate(-1)}>
+    <i className="bi bi-arrow-left"></i>
+  </button>
     <div className="container">
+         
+        <div className="position-relative mb-3">
+    
+    <img src={logo} alt="Logo" className="logo" />
+  </div>
+  <div className='card'>
       <div className="row justify-content-center">
         <div className="col-md-6">
           <h2 className="mt-5">Log In</h2>
@@ -48,6 +62,8 @@ const Login = ({ setJwt, setRole }) => {
           </button>
         </div>
       </div>
+    </div>
+    </div>
     </div>
   );
 };
