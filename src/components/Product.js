@@ -11,6 +11,7 @@ const Product = ({ jwt, role }) => {
   const [error, setError] = useState(null);
   const [showDescription, setShowDescription] = useState(false);
   const navigate = useNavigate();
+
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -28,8 +29,22 @@ const Product = ({ jwt, role }) => {
   }, [serialNumber]);
 
   const handleVerify = async () => {
-    // Implement your verification logic here, such as sending a verification request to the server
-    alert('Product verified successfully!');
+    const verifierType = localStorage.getItem('verifierType'); // Retrieve verifier type from local storage
+
+    if (!verifierType) {
+      console.error('Invalid verifier role');
+      return;
+    }
+
+    try {
+      await axios.put(`http://localhost:5000/api/products/${serialNumber}/verify`, { verifier: verifierType, status: 'Verified' });
+      setProduct(prevState => ({
+        ...prevState,
+        [`${verifierType}Status`]: 'Verified'
+      }));
+    } catch (error) {
+      console.error('Error verifying product:', error);
+    }
   };
 
   if (loading) {
@@ -47,28 +62,27 @@ const Product = ({ jwt, role }) => {
   const imageUrl = `http://localhost:5000/uploads/${product.image}`;
 
   return (
-    <div><button
-    className="btn btn-outline-secondary back-button"
-    onClick={() => navigate('/')}
-  >
+    <div> 
+     
+    <div className="container mt-5 product-page">
+    <button className="btn btn-outline-secondary me-auto" onClick={() => navigate('/')}>
     <i className="bi bi-arrow-left"></i>
   </button>
-    <div className="container mt-5 product-page">
       <div className="row justify-content-center">
         <div className="col-md-6 text-center">
-          <div className="mb-3">
+          <div className="product-image-container mb-3">
             <img
               src={imageUrl}
               alt={product.name}
               className="img-fluid rounded-circle border"
-              style={{ width: '400px', height: '400px', objectFit: 'cover' }}
+              style={{ width: '150px', height: '150px', objectFit: 'cover' }}
               onError={(e) => { e.target.onerror = null; e.target.src = 'http://localhost:5000/uploads/noimg.jpg'; }} // Add a fallback image in case of error
             />
           </div>
           <h1>{product.name}</h1>
-          <p><strong>Deployer:</strong> The product was sent</p>
-          <p><strong>Verifier 1:</strong> Not verified yet</p>
-          <p><strong>Verifier 2:</strong> Not verified yet</p>
+          <p><strong>Deployer:</strong> {product.deployerStatus}</p>
+          <p><strong>Verifier 1:</strong> {product.verifier1Status}</p>
+          <p><strong>Verifier 2:</strong> {product.verifier2Status}</p>
           <button className="btn btn-primary mt-3" onClick={() => setShowDescription(!showDescription)}>
             {showDescription ? 'Hide Description' : 'Show Description'}
           </button>

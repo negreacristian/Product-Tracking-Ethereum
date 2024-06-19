@@ -1,15 +1,19 @@
-const { ignition } = require("hardhat");
+const hre = require("hardhat");
 
 async function main() {
-  // Load the deployment module
-  const { proGuard } = await ignition.deployModule(require("../modules/ProGuardModule"));
+  // Get the Contract Factory
+  const MyContract = await hre.ethers.getContractFactory("MyContract");
 
-  console.log("ProGuard deployed to:", proGuard.address);
+  // Deploy the contract
+  const myContract = await MyContract.deploy();
+  await myContract.deployed();
+
+  console.log("MyContract deployed to:", myContract.address);
 }
 
 main()
   .then(() => process.exit(0))
-  .catch((error) => {
+  .catch(error => {
     console.error(error);
     process.exit(1);
   });

@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { connectMetaMask } from '../utils/metamask';
-import { fetchDeployerData } from '../utils/fetchData';
+import { fetchDeployerData, fetchAllProducts } from '../utils/fetchData';
 import logo from '../assets/logo.png';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap CSS is imported
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Deployer = ({ jwt, handleLogout }) => {
   const [account, setAccount] = useState(null);
   const [error, setError] = useState('');
   const [deployerData, setDeployerData] = useState({});
+  const [products, setProducts] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,6 +22,18 @@ const Deployer = ({ jwt, handleLogout }) => {
       }
     };
     getData();
+  }, []);
+
+  useEffect(() => {
+    const getProducts = async () => {
+      try {
+        const products = await fetchAllProducts();
+        setProducts(products);
+      } catch (error) {
+        console.error('Failed to fetch products:', error);
+      }
+    };
+    getProducts();
   }, []);
 
   useEffect(() => {
@@ -76,19 +89,12 @@ const Deployer = ({ jwt, handleLogout }) => {
   };
 
   return (
-    <div>
-      <button
-        className="btn btn-outline-secondary back-button"
-        onClick={() => navigate('/')}
-      >
+    <div className="container mt-5">
+      <button className="btn btn-outline-secondary back-button" onClick={() => navigate(-1)}>
         <i className="bi bi-arrow-left"></i>
       </button>
-    <div className="container mt-5">
-      <div className="row">
-      
-        <div className="col-11 text-center">
-          <img src={logo} alt="Logo" className="logo mb-3" />
-        </div>
+      <div className="position-relative mb-3">
+        <img src={logo} alt="Logo" className="logo" />
       </div>
       <div className="card">
         <div className="card-body text-center">
@@ -98,24 +104,22 @@ const Deployer = ({ jwt, handleLogout }) => {
               {account ? (
                 <div>
                   <p>Connected account: {account}</p>
-                  <div className="d-grid gap-2 d-md-block">
-                    <button className="btn btn-info m-2" onClick={handleCheckProfile}>
-                      Check Profile
-                    </button>
-                    <button className="btn btn-success m-2" onClick={handleAddProduct}>
-                      Add Product
-                    </button>
-                    <button className="btn btn-secondary m-2" onClick={handleViewAllProducts}>
-                      All Products
-                    </button>
-                  </div>
+                  <button className="btn btn-info" onClick={handleCheckProfile}>
+                    Check Profile
+                  </button>
+                  <button className="btn btn-success ml-2" onClick={handleAddProduct}>
+                    Add Product
+                  </button>
+                  <button className="btn btn-secondary ml-2" onClick={handleViewAllProducts}>
+                    All Products
+                  </button>
                 </div>
               ) : (
-                <button className="btn btn-primary m-2" onClick={handleConnectMetaMask}>
+                <button className="btn btn-primary" onClick={handleConnectMetaMask}>
                   Connect to MetaMask
                 </button>
               )}
-              <button className="btn btn-secondary mt-4" onClick={handleLogout}>
+              <button className="btn btn-secondary mt-3" onClick={handleLogout}>
                 Logout
               </button>
             </>
@@ -125,7 +129,20 @@ const Deployer = ({ jwt, handleLogout }) => {
           {error && <div className="alert alert-danger mt-2">{error}</div>}
         </div>
       </div>
-    </div>
+      <div className="mt-5">
+        <h2>All Products</h2>
+        {products.length > 0 ? (
+          <ul className="list-group">
+            {products.map((product) => (
+              <li key={product.serialNumber} className="list-group-item">
+                {product.name} - {product.serialNumber}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No products available.</p>
+        )}
+      </div>
     </div>
   );
 };

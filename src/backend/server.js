@@ -10,7 +10,7 @@ const QRCode = require('qrcode');
 const app = express();
 const PORT = 5000;
 
-app.use(cors()); // Add this line to enable CORS for all origins
+app.use(cors());
 app.use(bodyParser.json());
 
 // Serve static files from the 'uploads' directory
@@ -18,17 +18,18 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const SECRET_KEY = 'Lucrare_Licenta<>2024-Negrea*Cristian'; // Use a secure key in production
 const validTokens = {
-  deployerToken123: 'deployer',
-  verifierToken1: 'verifier',
-  verifierToken2: 'verifier'
+  deployerToken123: { role: 'deployer' },
+  verifierToken1: { role: 'verifier', verifierType: 'verifier1' },
+  verifierToken2: { role: 'verifier', verifierType: 'verifier2' }
 };
 
 app.post('/login', (req, res) => {
   const { token } = req.body;
 
   if (validTokens[token]) {
-    const userRole = validTokens[token];
-    const jwtToken = jwt.sign({ role: userRole }, SECRET_KEY, { expiresIn: '1h' });
+    const userRole = validTokens[token].role;
+    const verifierType = validTokens[token].verifierType;
+    const jwtToken = jwt.sign({ role: userRole, verifierType }, SECRET_KEY, { expiresIn: '1h' });
     return res.json({ jwtToken });
   } else {
     return res.status(401).json({ message: 'Invalid token' });
@@ -105,39 +106,49 @@ const saveProductData = (data) => {
   });
 };
 
-app.post('/api/products', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'pdf', maxCount: 1 }]), async (req, res) => {
+// Endpoint to add a new product
+app.post('/api/products', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'pdf', maxCount: 1 }]), (req, res) => {
   try {
     const { serialNumber, name, brand, description, lot } = req.body;
     const image = req.files && req.files['image'] ? req.files['image'][0].filename : null;
     const pdf = req.files && req.files['pdf'] ? req.files['pdf'][0].filename : null;
-
-    // Generate the QR code URL
     const productUrl = `http://localhost:3000/product/${serialNumber}`;
-    const qrCodeUrl = await QRCode.toDataURL(productUrl);
+    
+    // Generate QR code URL
+    QRCode.toDataURL(productUrl, (err, qrCodeUrl) => {
+      if (err) {
+        console.error('Error generating QR code:', err);
+        return res.status(500).json({ message: 'Error generating QR code' });
+      }
 
-    const product = {
-      serialNumber,
-      name,
-      brand,
-      description,
-      lot,
-      image,
-      pdf,
-      qrCodeUrl // Store the QR code URL
-    };
+      const product = {
+        serialNumber,
+        name,
+        brand,
+        description,
+        lot,
+        image,
+        pdf,
+        qrCodeUrl, // Add QR code URL to product data
+        deployerStatus: 'The product was sent',
+        verifier1Status: 'Not verified yet',
+        verifier2Status: 'Not verified yet'
+      };
 
-    console.log('Product received:', product);
+      console.log('Product received:', product);
 
-    // Save the product data to a JSON file
-    saveProductData(product);
+      // Save the product data to a JSON file
+      saveProductData(product);
 
-    res.status(200).json({ message: 'Product added successfully' });
+      res.status(200).json({ message: 'Product added successfully' });
+    });
   } catch (error) {
     console.error('Error occurred while adding product:', error);
-    res.status(500).json({ message: 'Error occurred while adding product' });
+    res.status(500).json({ message: 'Error occurred while adding product', error: error.message });
   }
 });
 
+// Endpoint to fetch a product by serial number
 app.get('/api/products/:serialNumber', (req, res) => {
   const { serialNumber } = req.params;
   const productsFilePath = path.resolve(__dirname, 'products.json');
@@ -161,6 +172,7 @@ app.get('/api/products/:serialNumber', (req, res) => {
   });
 });
 
+// Endpoint to fetch all products
 app.get('/api/products', (req, res) => {
   const productsFilePath = path.resolve(__dirname, 'products.json');
 
@@ -175,23 +187,43 @@ app.get('/api/products', (req, res) => {
   });
 });
 
-// Endpoint to refresh the JWT token
-app.post('/refresh-token', (req, res) => {
-  const authHeader = req.headers.authorization;
+// Endpoint to update the verification status of a product
+app.put('/api/products/:serialNumber/verify', (req, res) => {
+  const { serialNumber } = req.params;
+  const { verifier, status } = req.body;
+  const productsFilePath = path.resolve(__dirname, 'products.json');
 
-  if (!authHeader) {
-    return res.status(401).json({ message: 'No token provided' });
-  }
-
-  const token = authHeader.split(' ')[1];
-
-  jwt.verify(token, SECRET_KEY, (err, user) => {
+  fs.readFile(productsFilePath, (err, fileData) => {
     if (err) {
-      return res.status(403).json({ message: 'Invalid token' });
+      console.error('Error reading product data:', err);
+      return res.status(500).json({ message: 'Error reading product data' });
     }
 
-    const newToken = jwt.sign({ role: user.role }, SECRET_KEY, { expiresIn: '1h' });
-    return res.json({ jwtToken: newToken });
+    const products = JSON.parse(fileData);
+    const product = products.find(p => p.serialNumber === serialNumber);
+
+    if (!product) {
+      console.error('Product not found for serial number:', serialNumber);
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    if (verifier === 'verifier1') {
+      product.verifier1Status = status;
+    } else if (verifier === 'verifier2') {
+      product.verifier2Status = status;
+    } else {
+      return res.status(400).json({ message: 'Invalid verifier' });
+    }
+
+    fs.writeFile(productsFilePath, JSON.stringify(products, null, 2), (writeErr) => {
+      if (writeErr) {
+        console.error('Error writing file:', writeErr);
+        return res.status(500).json({ message: 'Error updating product data' });
+      } else {
+        console.log('Updated verification status for product', serialNumber);
+        res.status(200).json({ message: 'Verification status updated' });
+      }
+    });
   });
 });
 

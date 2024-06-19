@@ -60,23 +60,23 @@ const AddProduct = () => {
         setProductImage(null);
         setProductPdf(null);
       } else {
+        console.error('Failed to add product:', result.message);
         setMessage(`Failed to add product: ${result.message}`);
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error occurred while adding product:', error);
       setMessage('Error occurred while adding product');
     }
   };
 
   return (
-    <div className="container">
+    <div className="container mt-5">
       <button className="btn btn-outline-secondary back-button" onClick={() => navigate(-1)}>
         <i className="bi bi-arrow-left"></i>
       </button>
       
       {qrCodeValue ? (
-        <div className="card">
-          
+        <div className="card mt-5">
           <div className="card-body">
             <h2>{message}</h2>
             <div className="qr-code">
@@ -85,81 +85,84 @@ const AddProduct = () => {
           </div>
         </div>
       ) : (
-        <><h1>Add Product</h1>
-          {message && <p>{message}</p>}
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label>Serial Number</label>
-              <input
-                type="text"
-                className="form-control"
-                value={serialNumber}
-                onChange={(e) => setSerialNumber(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Product Name</label>
-              <input
-                type="text"
-                className="form-control"
-                value={productName}
-                onChange={(e) => setProductName(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Product Brand</label>
-              <input
-                type="text"
-                className="form-control"
-                value={productBrand}
-                onChange={(e) => setProductBrand(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Product Description</label>
-              <textarea
-                className="form-control"
-                value={productDescription}
-                onChange={(e) => setProductDescription(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Product Lot</label>
-              <input
-                type="text"
-                className="form-control"
-                value={productLot}
-                onChange={(e) => setProductLot(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Product Image (optional)</label>
-              <input
-                type="file"
-                className="form-control"
-                onChange={handleImageChange}
-                accept="image/*"
-              />
-            </div>
-            <div className="form-group">
-              <label>Product PDF (optional)</label>
-              <input
-                type="file"
-                className="form-control"
-                onChange={handlePdfChange}
-                accept="application/pdf"
-              />
-            </div>
-            <button type="submit" className="btn btn-primary mt-3">
-              Add Product
-            </button>
-          </form>
-        </>
+        
+          <div className="card-body">
+            <h1 className="card-title">Add Product</h1>
+            {message && <p>{message}</p>}
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label>Serial Number</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={serialNumber}
+                  onChange={(e) => setSerialNumber(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Product Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={productName}
+                  onChange={(e) => setProductName(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Product Brand</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={productBrand}
+                  onChange={(e) => setProductBrand(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Product Description</label>
+                <textarea
+                  className="form-control"
+                  value={productDescription}
+                  onChange={(e) => setProductDescription(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Product Lot</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={productLot}
+                  onChange={(e) => setProductLot(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Product Image (optional)</label>
+                <input
+                  type="file"
+                  className="form-control"
+                  onChange={handleImageChange}
+                  accept="image/*"
+                />
+              </div>
+              <div className="form-group">
+                <label>Product PDF (optional)</label>
+                <input
+                  type="file"
+                  className="form-control"
+                  onChange={handlePdfChange}
+                  accept="application/pdf"
+                />
+              </div>
+              <button type="submit" className="btn btn-primary mt-3">
+                Add Product
+              </button>
+            </form>
+          </div>
+    
       )}
     </div>
   );

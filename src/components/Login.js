@@ -18,8 +18,12 @@ const Login = ({ setJwt, setRole }) => {
       setJwt(jwtToken);
       setRole(decodedToken.role);
 
-      // Store the token in localStorage
+      // Store the token and verifier type in localStorage
       localStorage.setItem('authToken', jwtToken);
+      localStorage.setItem('userRole', decodedToken.role);
+      if (decodedToken.verifierType) {
+        localStorage.setItem('verifierType', decodedToken.verifierType);
+      }
 
       if (decodedToken.role === 'deployer') {
         navigate('/deployer');
@@ -32,37 +36,32 @@ const Login = ({ setJwt, setRole }) => {
   };
 
   return (
-    <div>
-      <button
-        className="btn btn-outline-secondary back-button"
-        onClick={() => navigate('/')}
-      >
-        <i className="bi bi-arrow-left"></i>
-      </button>
-      <div className="container">
-        <div className="position-relative mb-3">
+    <div className="container mt-5">
+      <div className="d-flex align-items-center mb-3">
+        <button className="btn btn-outline-secondary me-auto" onClick={() => navigate('/')}>
+          <i className="bi bi-arrow-left"></i>
+        </button>
+        <div className="mx-auto">
           <img src={logo} alt="Logo" className="logo" />
         </div>
-        <div className='card'>
-          <div className="row justify-content-center">
-            <div className="col-md-6">
-              <h2 className="mt-5">Log In</h2>
-              {error && <div className="alert alert-danger">{error}</div>}
-              <div className="form-group">
-                <label htmlFor="token">Token</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="token"
-                  value={token}
-                  onChange={(e) => setToken(e.target.value)}
-                />
-              </div>
-              <button className="btn btn-primary mt-3" onClick={handleLogin}>
-                Log In
-              </button>
-            </div>
+      </div>
+      <div className="card mx-auto" style={{ maxWidth: '500px' }}>
+        <div className="card-body">
+          <h2 className="mt-3 text-center">Log In</h2>
+          {error && <div className="alert alert-danger">{error}</div>}
+          <div className="form-group">
+            <label htmlFor="token">Token</label>
+            <input
+              type="text"
+              className="form-control"
+              id="token"
+              value={token}
+              onChange={(e) => setToken(e.target.value)}
+            />
           </div>
+          <button className="btn btn-primary mt-3 w-100" onClick={handleLogin}>
+            Log In
+          </button>
         </div>
       </div>
     </div>

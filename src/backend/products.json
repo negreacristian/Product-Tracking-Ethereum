@@ -5,62 +5,36 @@
     "brand": "Trek",
     "description": "sdafasdf",
     "lot": "1",
-    "image": "1717666440065.jpg",
-    "pdf": null
-  },
-  {
-    "serialNumber": "1712349712341",
-    "name": "Bike Electric",
-    "brand": "Ali Express",
-    "description": "Bicicleta electrica",
-    "lot": "123801",
-    "image": "1717768498887.jpeg",
-    "pdf": null
-  },
-  {
-    "serialNumber": "4654321354",
-    "name": "BMX",
-    "brand": "DK",
-    "description": "Descriere pt BMX",
-    "lot": "asadf2asdq23",
-    "image": "1717768827808.jpg",
-    "pdf": "1717768827813.pdf"
-  },
-  {
-    "serialNumber": "23452345",
-    "name": "Bike copii",
-    "brand": "KIDS HAPPY",
-    "description": "Bicicleta pentru copii",
-    "lot": "6554",
-    "image": "1717771863157.gif",
-    "pdf": null
-  },
-  {
-    "serialNumber": "qwerqwer",
-    "name": "Bicicleta",
-    "brand": "asdf",
-    "description": "asdf",
-    "lot": "asdf",
-    "image": "1717772861228.jpg",
-    "pdf": null
-  },
-  {
-    "serialNumber": "asdf",
-    "name": "adf",
-    "brand": "asdf",
-    "description": "asdf",
-    "lot": "asdf",
-    "image": null,
-    "pdf": null
-  },
-  {
-    "serialNumber": "aaaaaaaaa",
-    "name": "aaaaaaaaaa",
-    "brand": "a",
-    "description": "aaaaaaaaaaaa",
-    "lot": "a",
-    "image": null,
+    "image": "trek.jpg",
     "pdf": null,
-    "qrCodeUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAYAAAB1PADUAAAAAklEQVR4AewaftIAAATJSURBVO3BQY4jRxAEwfAC//9l1x7zVECjk6PRKszwj1QtOaladFK16KRq0UnVopOqRSdVi06qFp1ULTqpWnRSteikatFJ1aKTqkUnVYtOqhZ98hKQn6TmNwEyqbkBcqNmAvKT1LxxUrXopGrRSdWiT5ap2QTkDSBPqLkB8gSQSc0E5Ak1m4BsOqladFK16KRq0SdfBuQJNU8AmdRsAnKj5gkgm4A8oeabTqoWnVQtOqla9MlfBsiNmgnIBOQNIJOaCcik5m9yUrXopGrRSdWiT/4yam6ATGreADKp+T87qVp0UrXopGrRJ1+m5jdRMwGZ1NwAuQFyo2aTmt/kpGrRSdWik6pFnywD8psAmdQ8AWRSMwGZ1ExAboBMam6A/GYnVYtOqhadVC365CU1vwmQbwIyqXlDzY2a/5KTqkUnVYtOqhZ98hKQSc0EZJOaSc0TQG6AvAFkUnMDZFIzAdmk5ptOqhadVC06qVr0yUtqJiCTmgnIpOYNIJOaJ9S8AeQGyI2aCcgbap4AMql546Rq0UnVopOqRZ+8BGRSMwGZ1DwBZFIzqflJQJ5Qs0nNBOQNNZtOqhadVC06qVqEf+QvAmRS8waQGzWbgExqJiCTmieATGo2nVQtOqladFK16JOXgLyhZgJyo2YCMqmZgNyouVEzAbkBMqm5ATKpuVFzA+RGzTedVC06qVp0UrXok5fUTEAmNTdAJjU3QCY1E5BJzQ2QGzWTmgnIpGYCcqNmAvKGmgnIDZBJzRsnVYtOqhadVC365F+m5gbIpOYJIG8AeUPNE2omIN+kZtNJ1aKTqkUnVYvwj/wgIJOaJ4BMat4AcqNmAjKpuQEyqXkCyKRmAjKpuQEyqdl0UrXopGrRSdUi/COLgDyh5gbIE2omIJOaJ4DcqJmATGpugExqNgGZ1HzTSdWik6pFJ1WLPnkJyBNqnlBzA+QJIJOaGzU3QCY1N0AmNTdAvgnIpOaNk6pFJ1WLTqoWfbJMzQ2QSc0E5EbNpOYNIJOaGyBvqJmA3KiZgExqJiBPqNl0UrXopGrRSdWiT36YmgnIpOYGyBNqJiBPALlR8wSQSc0NkEnNBGRScwNkUrPppGrRSdWik6pFn3wZkEnNpOYGyKTmCSBvqJmA3ACZ1ExqJiBPAHkCyA2QSc0bJ1WLTqoWnVQtwj/yHwbkDTUTkBs1E5BJzQTkCTVPANmk5o2TqkUnVYtOqhZ98hKQn6RmUnMDZFLzBpAbIJuATGreUPNNJ1WLTqoWnVQt+mSZmk1AboBMajapmYBMat4AcqPmDTU3QCY1b5xULTqpWnRSteiTLwPyhJo3gExqJiCTmknNBOQJIJOaJ4C8oWYCMqmZ1Gw6qVp0UrXopGrRJ38ZNU8AuVFzA2RS84aaN4DcALlR88ZJ1aKTqkUnVYs++Z9RMwGZ1NwA+UlAnlBzA2RSs+mkatFJ1aKTqkWffJmab1IzAblRcwNkUjOpmYDcAHlDzQRkUjMBmdT8pJOqRSdVi06qFn2yDMhPAjKpeULNBGQCMqmZ1ExAbtTcAJnUPKFmAjKp+aaTqkUnVYtOqhbhH6laclK16KRq0UnVopOqRSdVi06qFp1ULTqpWnRSteikatFJ1aKTqkUnVYtOqhadVC36B+NuL0CRCBIzAAAAAElFTkSuQmCC"
+    "deployerStatus": "The product was sent",
+    "verifier1Status": "Not verified yet",
+    "verifier2Status": "Not verified yet"
+  },
+  {
+    "serialNumber": "2057912384",
+    "name": "Mountain Bike",
+    "brand": "GT FURY",
+    "description": "asdf asd fasdf asdfasdf ",
+    "lot": "367453",
+    "image": "1718807704376.jpg",
+    "pdf": "1718807704381.pdf",
+    "qrCodeUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAYAAAB1PADUAAAAAklEQVR4AewaftIAAATZSURBVO3BQY4kRxIEQdNA/f/Lun30CwNIpFdzhmsi+CNVS06qFp1ULTqpWnRSteikatFJ1aKTqkUnVYtOqhadVC06qVp0UrXopGrRSdWik6pFn7wE5DepeQPIG2omIJOaGyCTmhsgv0nNGydVi06qFp1ULfpkmZpNQJ4AMqmZ1NwAuQFyA2RSM6mZgExqbtRsArLppGrRSdWik6pFn3wZkCfUvKHmBsgTap4AMgH5JiBPqPmmk6pFJ1WLTqoWffIfA2RSM6m5ATIBuVEzqZmATGr+y06qFp1ULTqpWvTJf4yaCciNmjeATGomNTdAJjV/s5OqRSdVi06qFn3yZWq+CchvUnMDZFIzAdmk5k9yUrXopGrRSdWiT5YB+TepmYBMaiYgk5oJyA2QSc0EZFIzAXkCyJ/spGrRSdWik6pF+CP1j4BMam6ATGr+n5xULTqpWnRSteiTl4BMam6ATGomIDdqJiCTmk1qJiA3ap4AcqNmAjKp+ZOcVC06qVp0UrXok5fU3AB5Qs0NkCeAPKFmAvJNaiYgE5BJzQ2QSc0NkEnNGydVi06qFp1ULcIf+SIgfxI1bwB5Qs0E5EbNBGRSMwF5Q82mk6pFJ1WLTqoWffISkBs13wTkRs0EZFJzA+QJNROQJ4BMaiYgf7KTqkUnVYtOqhbhj7wA5A01N0Bu1ExAbtRMQCY1TwC5UfMEkBs1N0AmNROQGzVvnFQtOqladFK16JOX1NwAmdRMQCY1k5o/CZBJzQTkBsik5kbNE2omIJOabzqpWnRSteikatEnLwG5UfMEkBs1T6j5k6jZBGRScwPkRs0bJ1WLTqoWnVQtwh95AcgbaiYgk5pNQH6TmgnIpOYGyI2aCcikZgIyqdl0UrXopGrRSdWiT5apmYC8AWRS8wSQGzUTkCfUTEDeADKp+ZucVC06qVp0UrUIf+SLgExqJiA3aiYg36TmBsiNmgnIpGYCMqmZgNyoeQPIpOaNk6pFJ1WLTqoWffISkEnNpGYCMqm5AXKjZgIyqbkBMgGZ1Lyh5kbNJiCTmgnIN51ULTqpWnRStQh/5IuATGp+E5BJzQ2QSc0EZJOaJ4BMap4AcqPmjZOqRSdVi06qFn3yEpBJzQ2QGzUTkEnNBOQNIJOaCcgTap4A8gaQSc0EZFLzTSdVi06qFp1ULfrkJTU3at5Q85uATGqeADKpeULNE0CeAHKj5o2TqkUnVYtOqhZ98hKQ36RmUvMEkCeATGqeADKpeQLIpOYJNROQSc2mk6pFJ1WLTqoWfbJMzSYgN0AmNU+omYBMaiYgk5pJzQRkAvKEmjeA3ACZ1LxxUrXopGrRSdWiT74MyBNqnlAzAZnU3ACZ1ExAJjU3QCY1N0AmIJvUTEAmNZtOqhadVC06qVr0yV8OyA2QSc0E5AkgTwCZ1NyomYA8AeRGzQRkUvPGSdWik6pFJ1WLPvnLqbkB8oaaJ4BMap4AMqm5ATKp+TedVC06qVp0UrXoky9T829SMwG5AXKjZgKySc03AZnUbDqpWnRSteikatEny4D8JiCTmgnIpGYC8gSQSc0EZAKyCcikZgIyqflNJ1WLTqoWnVQtwh+pWnJSteikatFJ1aKTqkUnVYtOqhadVC06qVp0UrXopGrRSdWik6pFJ1WLTqoWnVQt+h9zsjRNPyxo4AAAAABJRU5ErkJggg==",
+    "deployerStatus": "The product was sent",
+    "verifier1Status": "Not verified yet",
+    "verifier2Status": "Not verified yet"
+  },
+  {
+    "serialNumber": "347354",
+    "name": "Electrica",
+    "brand": "FOCUS",
+    "description": "asdf asdf aasgwrjgssfd\r\n sfjhfgj ej dfh",
+    "lot": "10132",
+    "image": "1718808014226.jpeg",
+    "pdf": null,
+    "qrCodeUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAYAAAB1PADUAAAAAklEQVR4AewaftIAAASySURBVO3BSY4jSRAEQbUA//9lnT76KYBEOquXMZH4C1VLDlWLDlWLDlWLDlWLDlWLDlWLDlWLDlWLDlWLDlWLDlWLDlWLDlWLDlWLDlWLPryUhJ+k8kQSJpU3knCjcpOEG5UpCT9J5Y1D1aJD1aJD1aIPy1Q2JeENlZskTCo3Kk8kYVKZkvCEyqYkbDpULTpULTpULfrwZUl4QuWJJEwqUxLeSMKkMiVhUrlJwqYkPKHyTYeqRYeqRYeqRR/qSuVGZUrCpDIlYVL5lxyqFh2qFh2qFn34xyRhUnkiCU+oTCr/Z4eqRYeqRYeqRR++TOV3SsKk8k1JuFHZpPInOVQtOlQtOlQt+rAsCb+TypSEmyRMKlMSJpUpCZPKlISbJEwqN0n4kx2qFh2qFh2qFsVf+Isl4UZlSsITKlMSJpWbJEwq/7JD1aJD1aJD1aIPLyVhUpmSsEllUnlD5SYJTyRhUrlJwqQyJWGTyjcdqhYdqhYdqhZ9+GEqN0mYVKYkvKHyhMqUhCeScKMyJeENlSeSMKm8cahadKhadKha9GFZEiaVKQmTyk0S/iQqT6hsUpmS8IbKpkPVokPVokPVog8vqUxJeCIJk8pNEp5QmZJwozIl4UZlUtmkMiVhUnkiCZPKpkPVokPVokPVog9floQ3krBJ5QmVmyTcqNwkYVK5UblJwo3KNx2qFh2qFh2qFn14KQmTyk0SJpUpCZPKG0n4SSpTEm5UpiS8oTIl4SYJk8obh6pFh6pFh6pFH15SmZIwqUwqUxJukjCpbFKZkrBJ5QmVKQnfpLLpULXoULXoULXowzKVN1SeSMKkcqPyhMobSZhU3lCZknCjMiVhUtl0qFp0qFp0qFr04aUkTCo3SXgiCZPKG0mYVCaVKQmTypSEG5WbJEwqk8qNyk0SJpVvOlQtOlQtOlQt+vBlSXhD5YkkTCpTEp5QmZJwo3KThEnlJgnflIRJ5Y1D1aJD1aJD1aIPX6YyJWFSmZLwhsqUhEnld1KZknCjMiVhUpmS8ITKpkPVokPVokPVog9floRJZUrCjcpNEp5Iwo3KlIQblSeSMKncJGFSmZIwqdwkYVLZdKhadKhadKhaFH/hhSRMKjdJmFSmJNyoPJGEG5U3knCjcpOETSpTEp5QeeNQtehQtehQtSj+wl8sCZPKTRI2qdwk4QmVJ5KwSeWNQ9WiQ9WiQ9WiDy8l4SepTCpTEiaVSeUmCW8kYVMSJpU3VL7pULXoULXoULXowzKVTUm4ScITSZhUblSmJNyoPJGEG5U3VKYk3Ki8cahadKhadKha9OHLkvCEyqYkPKEyJeEmCTcqTyThDZUpCZPKlIRNh6pFh6pFh6pFH/5xKk8kYVKZkjCpbFJ5IwlPqGw6VC06VC06VC368D+XhDeSMKlsSsITKjdJmFQ2HaoWHaoWHaoWffgylW9SmZJwk4RJ5SYJk8qUhJskvKEyJWFSmZIwqfykQ9WiQ9WiQ9WiD8uS8JOSMKlMSfgmlSkJNyo3SZhUnlCZkjCpfNOhatGhatGhalH8haolh6pFh6pFh6pFh6pFh6pFh6pFh6pFh6pFh6pFh6pFh6pFh6pFh6pFh6pFh6pF/wFnESgsmkUaZAAAAABJRU5ErkJggg==",
+    "deployerStatus": "The product was sent",
+    "verifier1Status": "Verified",
+    "verifier2Status": "Verified"
   }
 ]
