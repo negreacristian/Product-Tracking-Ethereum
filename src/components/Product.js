@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { fetchProductData } from '../utils/fetchData';
-import './Product.css';
+import axios from 'axios';
 
-const Product = () => {
+const Product = ({ jwt, role }) => {
   const { serialNumber } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -13,8 +12,8 @@ const Product = () => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const data = await fetchProductData(serialNumber);
-        setProduct(data);
+        const response = await axios.get(`http://localhost:5000/api/products/${serialNumber}`);
+        setProduct(response.data);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching product:', error);
@@ -25,6 +24,11 @@ const Product = () => {
 
     fetchProduct();
   }, [serialNumber]);
+
+  const handleVerify = async () => {
+    // Implement your verification logic here, such as sending a verification request to the server
+    alert('Product verified successfully!');
+  };
 
   if (loading) {
     return <div className="text-center mt-5">Loading...</div>;
@@ -75,6 +79,11 @@ const Product = () => {
             >
               View PDF
             </a>
+          )}
+          {role === 'verifier' && (
+            <button className="btn btn-success mt-3" onClick={handleVerify}>
+              Verify
+            </button>
           )}
         </div>
       </div>

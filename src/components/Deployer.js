@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { connectMetaMask } from '../utils/metamask';
 import { fetchDeployerData } from '../utils/fetchData';
-import logo from '../assets/logo.png'
+import logo from '../assets/logo.png';
+
 const Deployer = ({ jwt, handleLogout }) => {
   const [account, setAccount] = useState(null);
   const [error, setError] = useState('');
@@ -60,7 +61,9 @@ const Deployer = ({ jwt, handleLogout }) => {
   };
 
   const handleCheckProfile = () => {
-    navigate('profile', { state: { ...deployerData, account, role: 'Deployer' } });
+    const role = 'Producer';
+    const { description, userLocation } = deployerData;
+    navigate('profile', { state: { account, role, description, userLocation } });
   };
 
   const handleAddProduct = () => {
@@ -73,15 +76,13 @@ const Deployer = ({ jwt, handleLogout }) => {
 
   return (
     <div className="container mt-5">
-          <button
-          className="btn btn-outline-secondary back-button" onClick={() => navigate(-1)}>
-          <i className="bi bi-arrow-left"></i>
-        </button>
-        <div className="position-relative mb-3">
-    
-    <img src={logo} alt="Logo" className="logo" />
-  </div>
-      <h1>Deployer Page</h1>
+      <button className="btn btn-outline-secondary back-button" onClick={() => navigate(-1)}>
+        <i className="bi bi-arrow-left"></i>
+      </button>
+      <div className="position-relative mb-3">
+        <img src={logo} alt="Logo" className="logo" />
+      </div>
+      <h1>Producer Page</h1>
       {jwt ? (
         <>
           {account ? (

@@ -43,5 +43,14 @@
     "lot": "asdf",
     "image": "1717772861228.jpg",
     "pdf": null
+  },
+  {
+    "serialNumber": "asdf",
+    "name": "adf",
+    "brand": "asdf",
+    "description": "asdf",
+    "lot": "asdf",
+    "image": null,
+    "pdf": null
   }
 ]

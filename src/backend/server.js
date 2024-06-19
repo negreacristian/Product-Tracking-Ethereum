@@ -155,11 +155,6 @@ app.get('/api/products/:serialNumber', (req, res) => {
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
-
 app.get('/api/products', (req, res) => {
   const productsFilePath = path.resolve(__dirname, 'products.json');
 
@@ -192,4 +187,8 @@ app.post('/refresh-token', (req, res) => {
     const newToken = jwt.sign({ role: user.role }, SECRET_KEY, { expiresIn: '1h' });
     return res.json({ jwtToken: newToken });
   });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

@@ -7,14 +7,8 @@ export const fetchDeployerData = async () => {
   return data;
 };
 
-export const fetchVerifierData = async () => {
-  const response = await fetch('/data/verifierData.json');
-  if (!response.ok) {
-    throw new Error('Failed to fetch verifier data');
-  }
-  const data = await response.json();
-  return data;
-};
+
+
 
 export const fetchProductData = async (serialNumber) => {
   const response = await fetch(`http://localhost:5000/api/products/${serialNumber}`);

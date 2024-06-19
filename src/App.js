@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Home from './components/Home';
 import Login from './components/Login';
@@ -18,7 +18,7 @@ import axios from 'axios';
 const App = () => {
   const [jwt, setJwt] = useState(null);
   const [role, setRole] = useState(null);
-  const [loading, setLoading] = useState(true); // Add a loading state
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
@@ -27,7 +27,7 @@ const App = () => {
       const decodedToken = JSON.parse(atob(token.split('.')[1]));
       setRole(decodedToken.role);
     }
-    setLoading(false); // Set loading to false after checking the token
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -88,7 +88,7 @@ const App = () => {
           </PrivateRoute>
         } />
 
-        <Route path="/product/:serialNumber" element={<Product />} />
+        <Route path="/product/:serialNumber" element={<Product jwt={jwt} role={role} />} />
 
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

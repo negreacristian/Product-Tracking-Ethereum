@@ -1,26 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { connectMetaMask } from '../utils/metamask';
-import { fetchVerifierData } from '../utils/fetchData';
+import axios from 'axios';
 import logo from '../assets/logo.png';
 
 const Verifier = ({ jwt, handleLogout }) => {
   const [account, setAccount] = useState(null);
   const [error, setError] = useState('');
-  const [verifierData, setVerifierData] = useState({});
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const data = await fetchVerifierData();
-        setVerifierData(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getData();
-  }, []);
 
   useEffect(() => {
     const connectedAccount = localStorage.getItem('connectedMetaMaskAccount');
@@ -60,19 +47,28 @@ const Verifier = ({ jwt, handleLogout }) => {
     }
   };
 
-  const handleCheckProfile = () => {
-    navigate('profile', { state: { ...verifierData, account, role: 'Verifier' } });
+  const handleCheckProfile = async () => {
+    try {
+      const response = await axios.get('https://ipapi.co/json/');
+      navigate('profile', { state: { account, role: 'Verifier', userLocation: response.data.city } });
+    } catch (error) {
+      console.error('Error fetching location:', error);
+      setError('Failed to fetch location.');
+    }
+  };
+
+  const handleVerifyProduct = () => {
+    navigate('/scan'); // Redirect to the QR scanner page
   };
 
   return (
     <div className="container mt-5">
-            <button className="btn btn-outline-secondary back-button" onClick={() => navigate(-1)}>
-          <i className="bi bi-arrow-left"></i>
-        </button>
-        <div className="position-relative mb-3">
-    
-    <img src={logo} alt="Logo" className="logo" />
-  </div>
+      <button className="btn btn-outline-secondary back-button" onClick={() => navigate(-1)}>
+        <i className="bi bi-arrow-left"></i>
+      </button>
+      <div className="position-relative mb-3">
+        <img src={logo} alt="Logo" className="logo" />
+      </div>
       <h1>Verifier Page</h1>
       {jwt ? (
         <>
@@ -81,6 +77,9 @@ const Verifier = ({ jwt, handleLogout }) => {
               <p>Connected account: {account}</p>
               <button className="btn btn-info" onClick={handleCheckProfile}>
                 Check Profile
+              </button>
+              <button className="btn btn-warning ml-2" onClick={handleVerifyProduct}>
+                Verify Product
               </button>
             </div>
           ) : (

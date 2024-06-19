@@ -32,38 +32,39 @@ const Login = ({ setJwt, setRole }) => {
   };
 
   return (
-    <div><button
-    className="btn btn-outline-secondary back-button" onClick={() => navigate(-1)}>
-    <i className="bi bi-arrow-left"></i>
-  </button>
-    <div className="container">
-         
+    <div>
+      <button
+        className="btn btn-outline-secondary back-button"
+        onClick={() => navigate('/')}
+      >
+        <i className="bi bi-arrow-left"></i>
+      </button>
+      <div className="container">
         <div className="position-relative mb-3">
-    
-    <img src={logo} alt="Logo" className="logo" />
-  </div>
-  <div className='card'>
-      <div className="row justify-content-center">
-        <div className="col-md-6">
-          <h2 className="mt-5">Log In</h2>
-          {error && <div className="alert alert-danger">{error}</div>}
-          <div className="form-group">
-            <label htmlFor="token">Token</label>
-            <input
-              type="text"
-              className="form-control"
-              id="token"
-              value={token}
-              onChange={(e) => setToken(e.target.value)}
-            />
+          <img src={logo} alt="Logo" className="logo" />
+        </div>
+        <div className='card'>
+          <div className="row justify-content-center">
+            <div className="col-md-6">
+              <h2 className="mt-5">Log In</h2>
+              {error && <div className="alert alert-danger">{error}</div>}
+              <div className="form-group">
+                <label htmlFor="token">Token</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="token"
+                  value={token}
+                  onChange={(e) => setToken(e.target.value)}
+                />
+              </div>
+              <button className="btn btn-primary mt-3" onClick={handleLogin}>
+                Log In
+              </button>
+            </div>
           </div>
-          <button className="btn btn-primary mt-3" onClick={handleLogin}>
-            Log In
-          </button>
         </div>
       </div>
-    </div>
-    </div>
     </div>
   );
 };
