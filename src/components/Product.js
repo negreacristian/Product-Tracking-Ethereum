@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap CSS is imported
+import { useNavigate } from 'react-router-dom';
 
 const Product = ({ jwt, role }) => {
   const { serialNumber } = useParams();
@@ -8,7 +10,7 @@ const Product = ({ jwt, role }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showDescription, setShowDescription] = useState(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -45,14 +47,21 @@ const Product = ({ jwt, role }) => {
   const imageUrl = `http://localhost:5000/uploads/${product.image}`;
 
   return (
+    <div><button
+    className="btn btn-outline-secondary back-button"
+    onClick={() => navigate('/')}
+  >
+    <i className="bi bi-arrow-left"></i>
+  </button>
     <div className="container mt-5 product-page">
       <div className="row justify-content-center">
         <div className="col-md-6 text-center">
-          <div className="product-image-container mb-3">
+          <div className="mb-3">
             <img
               src={imageUrl}
               alt={product.name}
-              className="product-image rounded-circle"
+              className="img-fluid rounded-circle border"
+              style={{ width: '400px', height: '400px', objectFit: 'cover' }}
               onError={(e) => { e.target.onerror = null; e.target.src = 'http://localhost:5000/uploads/noimg.jpg'; }} // Add a fallback image in case of error
             />
           </div>
@@ -68,6 +77,11 @@ const Product = ({ jwt, role }) => {
               <p><strong>Brand:</strong> {product.brand}</p>
               <p><strong>Lot:</strong> {product.lot}</p>
               <p>{product.description}</p>
+              {product.qrCodeUrl && (
+                <div className="mt-3">
+                  <img src={product.qrCodeUrl} alt="QR Code" className="img-fluid" />
+                </div>
+              )}
             </div>
           )}
           {product.pdf && (
@@ -87,6 +101,7 @@ const Product = ({ jwt, role }) => {
           )}
         </div>
       </div>
+    </div>
     </div>
   );
 };

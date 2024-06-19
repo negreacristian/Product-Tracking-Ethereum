@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { connectMetaMask } from '../utils/metamask';
 import axios from 'axios';
 import logo from '../assets/logo.png';
+import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap CSS is imported
 
 const Verifier = ({ jwt, handleLogout }) => {
   const [account, setAccount] = useState(null);
@@ -62,39 +63,50 @@ const Verifier = ({ jwt, handleLogout }) => {
   };
 
   return (
-    <div className="container mt-5">
-      <button className="btn btn-outline-secondary back-button" onClick={() => navigate(-1)}>
+    <div>
+      <button
+        className="btn btn-outline-secondary back-button"
+        onClick={() => navigate('/')}
+      >
         <i className="bi bi-arrow-left"></i>
       </button>
-      <div className="position-relative mb-3">
-        <img src={logo} alt="Logo" className="logo" />
+    <div className="container mt-5">
+      <div className="row">
+        <div className="col-11 text-center">
+          <img src={logo} alt="Logo" className="logo mb-3" />
+        </div>
       </div>
-      <h1>Verifier Page</h1>
-      {jwt ? (
-        <>
-          {account ? (
-            <div>
-              <p>Connected account: {account}</p>
-              <button className="btn btn-info" onClick={handleCheckProfile}>
-                Check Profile
+      <div className="card mx-auto" style={{ maxWidth: '500px' }}>
+        <div className="card-body text-center">
+          <h1 className="card-title">Verifier Page</h1>
+          {jwt ? (
+            <>
+              {account ? (
+                <div>
+                  <p>Connected account: {account}</p>
+                  <button className="btn btn-info m-2" onClick={handleCheckProfile}>
+                    Check Profile
+                  </button>
+                  <button className="btn btn-warning m-2" onClick={handleVerifyProduct}>
+                    Verify Product
+                  </button>
+                </div>
+              ) : (
+                <button className="btn btn-primary m-2" onClick={handleConnectMetaMask}>
+                  Connect to MetaMask
+                </button>
+              )}
+              <button className="btn btn-secondary mt-4" onClick={handleLogout}>
+                Logout
               </button>
-              <button className="btn btn-warning ml-2" onClick={handleVerifyProduct}>
-                Verify Product
-              </button>
-            </div>
+            </>
           ) : (
-            <button className="btn btn-primary" onClick={handleConnectMetaMask}>
-              Connect to MetaMask
-            </button>
+            <p>Please log in as a verifier to connect to MetaMask.</p>
           )}
-          <button className="btn btn-secondary mt-3" onClick={handleLogout}>
-            Logout
-          </button>
-        </>
-      ) : (
-        <p>Please log in as a verifier to connect to MetaMask.</p>
-      )}
-      {error && <div className="alert alert-danger mt-2">{error}</div>}
+          {error && <div className="alert alert-danger mt-2">{error}</div>}
+        </div>
+      </div>
+    </div>
     </div>
   );
 };

@@ -5,6 +5,7 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const QRCode = require('qrcode');
 
 const app = express();
 const PORT = 5000;
@@ -104,11 +105,15 @@ const saveProductData = (data) => {
   });
 };
 
-app.post('/api/products', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'pdf', maxCount: 1 }]), (req, res) => {
+app.post('/api/products', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'pdf', maxCount: 1 }]), async (req, res) => {
   try {
     const { serialNumber, name, brand, description, lot } = req.body;
     const image = req.files && req.files['image'] ? req.files['image'][0].filename : null;
     const pdf = req.files && req.files['pdf'] ? req.files['pdf'][0].filename : null;
+
+    // Generate the QR code URL
+    const productUrl = `http://localhost:3000/product/${serialNumber}`;
+    const qrCodeUrl = await QRCode.toDataURL(productUrl);
 
     const product = {
       serialNumber,
@@ -118,6 +123,7 @@ app.post('/api/products', upload.fields([{ name: 'image', maxCount: 1 }, { name:
       lot,
       image,
       pdf,
+      qrCodeUrl // Store the QR code URL
     };
 
     console.log('Product received:', product);
