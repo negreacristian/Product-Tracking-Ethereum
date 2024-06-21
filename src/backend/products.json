@@ -36,5 +36,18 @@
     "deployerStatus": "The product was sent",
     "verifier1Status": "Verified",
     "verifier2Status": "Verified"
+  },
+  {
+    "serialNumber": "2634562342",
+    "name": "sfdg",
+    "brand": "sdfg",
+    "description": "sdfg",
+    "lot": "sdfg",
+    "image": null,
+    "pdf": null,
+    "qrCodeUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAACUCAYAAAB1PADUAAAAAklEQVR4AewaftIAAAUFSURBVO3BQQ4jRxLAQLKg/3+Z62OeGmioNDs2MsL+wVqXHNa66LDWRYe1LjqsddFhrYsOa110WOuiw1oXHda66LDWRYe1LjqsddFhrYsOa110WOuiD19S+ZMqnqhMFZPKNyomlaniicpU8UTlT6r4xmGtiw5rXXRY66IPl1XcpPJEZap4o+KJyqQyVUwqU8UTlaniScVNKjcd1rrosNZFh7Uu+vBjKm9UvFExqTypeKLyhspUMak8qfiGyhsVv3RY66LDWhcd1rrow39MxaQyqUwV36h4o+K/7LDWRYe1LjqsddGHfzmVqWKqmFSeVEwqT1SmiqliUnlS8W92WOuiw1oXHda66MOPVfxSxaTyDZWp4pcqvlHxNzmsddFhrYsOa1304TKVP0llqphUpopJZaqYVKaKSWWqmFSmikllqnii8jc7rHXRYa2LDmtdZP/gP0Rlqnii8kbFpPKkYlKZKv5LDmtddFjrosNaF9k/+ILKVDGpTBWTylQxqUwV31B5UjGpfKPil1SmiicqU8VNh7UuOqx10WGtiz58qWJSmSomlaliUpkqJpWpYlKZKp5UfKPiJpUnFVPFpDJVTBWTylTxjcNaFx3Wuuiw1kUf/nIqT1SmiicVk8qTiicqTyqeqEwVb6hMFZPKn3RY66LDWhcd1rrow4+pvFHxRGWqmFSeVDypeKNiUplUnlRMKlPFGypTxaQyVdx0WOuiw1oXHda66MOPVUwqb6hMFZPKk4pJ5U+q+IbKVDFVTCpvqEwV3zisddFhrYsOa1304S9XMam8oTJVTCqTylTxROVvpjJVTCo3Hda66LDWRYe1LvpwWcUbKt+omFSmiknlScWkMlVMFd9QeVIxqTypeKLyS4e1LjqsddFhrYs+fEllqphUnlS8oTKpPFGZKp6ovKHypGJSmSqeqDypmFSmiicVNx3Wuuiw1kWHtS76cJnKVPFE5Y2KSeVJxaTypGJSuaniicqTiicVb6hMFd84rHXRYa2LDmtdZP/gIpU3Kt5Q+aWKSeVJxaTypOINlaniDZWpYlKZKr5xWOuiw1oXHda66MOXVKaKSWWqmFS+UTGpPKmYVCaVqeKNil9SmSomlaliUvmlw1oXHda66LDWRR++VDGpvFHxhsqk8qTijYonKlPFpPKk4m9ScdNhrYsOa110WOuiD19SmSomlTdUnlRMKlPFE5Wp4hsqTyqeqHxDZap4UvFLh7UuOqx10WGtiz58qeJJxRsV31CZKt5QmSqmiicq36h4Q+WJyhsV3zisddFhrYsOa1304Usqf1LFVDGpvKEyVUwqU8Wk8kTlGypTxROVqWJS+aXDWhcd1rrosNZFHy6ruEnljYpJ5UnFpPJEZaqYVG6qeKPi/+mw1kWHtS46rHXRhx9TeaPiDZWpYqp4o2JSmSreqHiiMqn8SRU3Hda66LDWRYe1LvrwL1cxqUwVN6lMFU9U3qh4ovKGylTxS4e1LjqsddFhrYs+/MupTBWTylQxqUwVTyqeVHxDZar4JZWp4huHtS46rHXRYa2LPvxYxS9VvKHyRsUTlScVT1SmiicVk8qTikllqrjpsNZFh7UuOqx10YfLVP4klScVk8oTlZtUpoo3VJ5UfENlqvjGYa2LDmtddFjrIvsHa11yWOuiw1oXHda66LDWRYe1LjqsddFhrYsOa110WOuiw1oXHda66LDWRYe1LjqsddFhrYv+B6DAYUEAdjdpAAAAAElFTkSuQmCC",
+    "deployerStatus": "The product was sent",
+    "verifier1Status": "Not verified yet",
+    "verifier2Status": "Not verified yet"
   }
 ]

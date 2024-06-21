@@ -1,19 +1,7 @@
-const hre = require("hardhat");
+const { buildModule } = require("@nomicfoundation/hardhat-ignition/modules");
 
-async function main() {
-  // Get the Contract Factory
-  const MyContract = await hre.ethers.getContractFactory("MyContract");
+module.exports = buildModule("ProGuardModule", (m) => {
+  const proGuard = m.contract("ProGuard");
 
-  // Deploy the contract
-  const myContract = await MyContract.deploy();
-  await myContract.deployed();
-
-  console.log("MyContract deployed to:", myContract.address);
-}
-
-main()
-  .then(() => process.exit(0))
-  .catch(error => {
-    console.error(error);
-    process.exit(1);
-  });
+  return { proGuard };
+});
