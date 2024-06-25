@@ -10,8 +10,8 @@ const AddProduct = () => {
   const [serialNumber, setSerialNumber] = useState('');
   const [productName, setProductName] = useState('');
   const [productBrand, setProductBrand] = useState('');
-  const [productDescription, setProductDescription] = useState('');
-  const [productLot, setProductLot] = useState('');
+  const [actor, setActor] = useState('');
+  const [location, setLocation] = useState('');
   const [productImage, setProductImage] = useState(null);
   const [productPdf, setProductPdf] = useState(null);
   const [message, setMessage] = useState('');
@@ -31,6 +31,11 @@ const AddProduct = () => {
           const contractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3'; // Replace with the actual address
           const contract = new web3.eth.Contract(contractABI.abi, contractAddress);
           setContract(contract);
+          console.log('Web3, accounts, and contract initialized:', { web3, accounts, contract });
+        })
+        .catch(error => {
+          console.error('Error initializing Web3, accounts, or contract:', error);
+          setMessage('Error initializing Web3, accounts, or contract');
         });
     } else {
       setMessage('Please install MetaMask!');
@@ -47,13 +52,14 @@ const AddProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage(''); // Clear any previous messages
 
     const formData = new FormData();
     formData.append('serialNumber', serialNumber);
     formData.append('name', productName);
     formData.append('brand', productBrand);
-    formData.append('description', productDescription);
-    formData.append('lot', productLot);
+    formData.append('actor', actor);
+    formData.append('location', location);
     if (productImage) {
       formData.append('image', productImage);
     }
@@ -62,51 +68,63 @@ const AddProduct = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/products', {
-        method: 'POST',
-        body: formData,
-      });
+      // Interact with the blockchain
+      if (web3 && contract && accounts.length > 0) {
+        console.log('Attempting to register product on blockchain:', {
+          productName,
+          productBrand,
+          serialNumber,
+          actor,
+          location,
+          from: accounts[0]
+        });
 
-      const result = await response.json();
+        contract.methods.registerProduct(
+          productName,
+          productBrand,
+          serialNumber,
+          actor,
+          location
+        ).send({ from: accounts[0] })
+          .on('receipt', async (receipt) => {
+            console.log('Blockchain transaction receipt:', receipt);
 
-      if (response.ok) {
-        // Interact with the blockchain
-        if (web3 && contract && accounts.length > 0) {
-          const imageUrl = productImage ? URL.createObjectURL(productImage) : '';
-          const pdfUrl = productPdf ? URL.createObjectURL(productPdf) : '';
+            // Blockchain transaction was successful
+            try {
+              const response = await fetch('http://localhost:5000/api/products', {
+                method: 'POST',
+                body: formData,
+              });
 
-          contract.methods.addProduct(
-            serialNumber,
-            productName,
-            productBrand,
-            productDescription,
-            productLot,
-            imageUrl,
-            pdfUrl
-          ).send({ from: accounts[0] })
-            .on('receipt', function(receipt) {
-              setMessage('Product added successfully');
-              setQrCodeValue(`http://localhost:3000/product/${serialNumber}`);
+              const result = await response.json();
 
-              // Optionally, clear the form
-              setSerialNumber('');
-              setProductName('');
-              setProductBrand('');
-              setProductDescription('');
-              setProductLot('');
-              setProductImage(null);
-              setProductPdf(null);
-            })
-            .on('error', function(error) {
-              console.error('Error occurred while adding product:', error);
-              setMessage('Error occurred while adding product');
-            });
-        } else {
-          setMessage('Web3, contract, or accounts not loaded');
-        }
+              if (response.ok) {
+                setMessage('Product added successfully');
+                setQrCodeValue(`http://localhost:3000/product/${serialNumber}`);
+
+                // Optionally, clear the form
+                setSerialNumber('');
+                setProductName('');
+                setProductBrand('');
+                setActor('');
+                setLocation('');
+                setProductImage(null);
+                setProductPdf(null);
+              } else {
+                console.error('Failed to add product to local server:', result.message);
+                setMessage(`Failed to add product: ${result.message}`);
+              }
+            } catch (error) {
+              console.error('Error occurred while adding product to local server:', error);
+              setMessage('Error occurred while adding product to local server');
+            }
+          })
+          .on('error', (error) => {
+            console.error('Error occurred while adding product to blockchain:', error);
+            setMessage('Error occurred while adding product to blockchain');
+          });
       } else {
-        console.error('Failed to add product:', result.message);
-        setMessage(`Failed to add product: ${result.message}`);
+        setMessage('Web3, contract, or accounts not loaded');
       }
     } catch (error) {
       console.error('Error occurred while adding product:', error);
@@ -165,21 +183,22 @@ const AddProduct = () => {
               />
             </div>
             <div className="form-group">
-              <label>Product Description</label>
-              <textarea
+              <label>Actor</label>
+              <input
+                type="text"
                 className="form-control"
-                value={productDescription}
-                onChange={(e) => setProductDescription(e.target.value)}
+                value={actor}
+                onChange={(e) => setActor(e.target.value)}
                 required
               />
             </div>
             <div className="form-group">
-              <label>Product Lot</label>
+              <label>Location</label>
               <input
                 type="text"
                 className="form-control"
-                value={productLot}
-                onChange={(e) => setProductLot(e.target.value)}
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
                 required
               />
             </div>

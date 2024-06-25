@@ -1,43 +1,85 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.17;
 
+import "hardhat/console.sol";
+
 contract ProGuard {
+
     struct Product {
-        string serialNumber;
         string name;
+        string serialNumber;
         string brand;
-        string description;
-        string lot;
-        string imageUrl;
-        string pdfUrl;
+        mapping(uint => ProductHistory) history;
+        uint historySize;
+    }
+
+    struct ProductHistory {
+        uint id;
+        string actor;
+        string location;
     }
 
     mapping(string => Product) private products;
-    event ProductAdded(string serialNumber, string name, string brand, string description, string lot, string imageUrl, string pdfUrl);
 
-    function addProduct(
-        string memory serialNumber,
-        string memory name,
-        string memory brand,
-        string memory description,
-        string memory lot,
-        string memory imageUrl,
-        string memory pdfUrl
-    ) public {
-        Product memory newProduct = Product({
-            serialNumber: serialNumber,
-            name: name,
-            brand: brand,
-            description: description,
-            lot: lot,
-            imageUrl: imageUrl,
-            pdfUrl: pdfUrl
-        });
-        products[serialNumber] = newProduct;
-        emit ProductAdded(serialNumber, name, brand, description, lot, imageUrl, pdfUrl);
+    function registerProduct(
+        string memory _name, 
+        string memory _brand, 
+        string memory _serialNumber, 
+        string memory _actor, 
+        string memory _location
+    ) 
+        public 
+    {
+        Product storage p = products[_serialNumber];
+
+        p.name = _name;
+        p.brand = _brand;
+        p.serialNumber = _serialNumber;
+        p.historySize = 0;
+
+        addProductHistory(_serialNumber, _actor, _location);
     }
 
-    function getProduct(string memory serialNumber) public view returns (Product memory) {
-        return products[serialNumber];
+    function addProductHistory(
+        string memory _serialNumber, 
+        string memory _actor, 
+        string memory _location
+    ) 
+        public 
+    {
+        Product storage p = products[_serialNumber];
+        p.historySize++;
+        p.history[p.historySize] = ProductHistory(p.historySize, _actor, _location);
+
+        console.log("History Size: %s", p.historySize);
+        console.log("Product History added: %s", p.history[p.historySize].actor);
+        console.log("Product: %s", p.name);
+    }
+
+    function getProduct(
+        string memory _serialNumber
+    ) 
+        public 
+        view 
+        returns (
+            string memory, 
+            string memory, 
+            string memory, 
+            ProductHistory[] memory
+        ) 
+    {
+        Product storage p = products[_serialNumber];
+        ProductHistory[] memory pHistory = new ProductHistory[](p.historySize);
+
+        for (uint i = 0; i < p.historySize; i++) {
+            pHistory[i] = p.history[i + 1];
+        }
+
+        return (
+            p.serialNumber, 
+            p.name, 
+            p.brand, 
+            pHistory
+        );
     }
 }

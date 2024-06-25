@@ -51,7 +51,10 @@ const Verifier = ({ jwt, handleLogout }) => {
   const handleCheckProfile = async () => {
     try {
       const response = await axios.get('https://ipapi.co/json/');
-      navigate('profile', { state: { account, role: 'Verifier', userLocation: response.data.city } });
+      const userLocation = response.data.city;
+      localStorage.setItem('verifierType', 'verifier'); // Set verifier type
+      localStorage.setItem('verifierLocation', userLocation); // Set verifier location
+      navigate('profile', { state: { account, role: 'verifier', userLocation } });
     } catch (error) {
       console.error('Error fetching location:', error);
       setError('Failed to fetch location.');

@@ -1,7 +1,6 @@
 export const connectMetaMask = async () => {
   if (window.ethereum) {
     try {
-      // Request account access
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
       return accounts[0];
     } catch (error) {
