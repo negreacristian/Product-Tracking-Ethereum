@@ -1,40 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { connectMetaMask } from '../utils/metamask';
-import { fetchDeployerData, fetchAllProducts } from '../utils/fetchData';
 import logo from '../assets/logo.png';
+import metamaskLogo from '../assets/meta.png'; // Add the MetaMask logo
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
 
 const Deployer = ({ jwt, handleLogout }) => {
   const [account, setAccount] = useState(null);
   const [error, setError] = useState('');
-  const [deployerData, setDeployerData] = useState({});
-  const [products, setProducts] = useState([]);
+  const [connecting, setConnecting] = useState(false); // State for connecting
   const navigate = useNavigate();
 
   useEffect(() => {
-    const getData = async () => {
+    const fetchLocation = async () => {
       try {
-        const data = await fetchDeployerData();
-        setDeployerData(data);
+        const response = await axios.get('https://ipapi.co/json/');
+        const profile = {
+          account,
+          role: 'Producer',
+          location: response.data.city,
+        };
+        localStorage.setItem('profile', JSON.stringify(profile));
       } catch (error) {
-        console.error(error);
+        console.error('Error fetching location:', error);
       }
     };
-    getData();
-  }, []);
 
-  useEffect(() => {
-    const getProducts = async () => {
-      try {
-        const products = await fetchAllProducts();
-        setProducts(products);
-      } catch (error) {
-        console.error('Failed to fetch products:', error);
-      }
-    };
-    getProducts();
-  }, []);
+    if (account) {
+      fetchLocation();
+    }
+  }, [account]);
 
   useEffect(() => {
     const connectedAccount = localStorage.getItem('connectedMetaMaskAccount');
@@ -65,19 +61,25 @@ const Deployer = ({ jwt, handleLogout }) => {
 
   const handleConnectMetaMask = async () => {
     try {
+      setConnecting(true); // Set connecting state to true
       const connectedAccount = await connectMetaMask();
       setAccount(connectedAccount);
       localStorage.setItem('connectedMetaMaskAccount', connectedAccount);
       setError('');
     } catch (err) {
       setError(err.message);
+    } finally {
+      setConnecting(false); // Set connecting state to false
     }
   };
 
   const handleCheckProfile = () => {
-    const role = 'Producer';
-    const { description, userLocation } = deployerData;
-    navigate('profile', { state: { account, role, description, userLocation } });
+    const profile = JSON.parse(localStorage.getItem('profile'));
+    if (profile) {
+      navigate('profile', { state: profile });
+    } else {
+      setError('Profile not available.');
+    }
   };
 
   const handleAddProduct = () => {
@@ -96,52 +98,48 @@ const Deployer = ({ jwt, handleLogout }) => {
       <div className="position-relative mb-3">
         <img src={logo} alt="Logo" className="logo" />
       </div>
-      <div className="card">
-        <div className="card-body text-center">
-          <h1 className="card-title">Producer Page</h1>
+      <div className="card mx-auto" style={{ maxWidth: '600px', padding: '2rem' }}>
+        <div className="card-body d-flex flex-column justify-content-between" style={{ height: '500px', color: '#272727' }}>
+          <div className="text-center">
+            <h1 className="card-title">Producer Page</h1>
+            {account && <p>Connected account: {account}</p>}
+          </div>
+          <div className="flex-grow-1"></div>
           {jwt ? (
             <>
-              {account ? (
-                <div>
-                  <p>Connected account: {account}</p>
-                  <button className="btn btn-info" onClick={handleCheckProfile}>
-                    Check Profile
-                  </button>
-                  <button className="btn btn-success ml-2" onClick={handleAddProduct}>
-                    Add Product
-                  </button>
-                  <button className="btn btn-secondary ml-2" onClick={handleViewAllProducts}>
-                    All Products
-                  </button>
-                </div>
-              ) : (
-                <button className="btn btn-primary" onClick={handleConnectMetaMask}>
-                  Connect to MetaMask
+              <div>
+                {account ? (
+                  <>
+                    <div className="d-flex justify-content-between">
+                      <button className="btn btn-info" onClick={handleCheckProfile} style={{ fontSize: '1rem', padding: '0.5rem 1rem', width: '30%', backgroundColor: '#272727', color: '#F6F6E9', fontWeight: 'bold', border: 'none' }}>
+                        Check Profile
+                      </button>
+                      <button className="btn btn-success" onClick={handleAddProduct} style={{ fontSize: '1rem', padding: '0.5rem 1rem', width: '30%', backgroundColor: '#272727', color: '#F6F6E9', fontWeight: 'bold', border: 'none' }}>
+                        Add Product
+                      </button>
+                      <button className="btn btn-secondary" onClick={handleViewAllProducts} style={{ fontSize: '1rem', padding: '0.5rem 1rem', width: '30%', backgroundColor: '#272727', color: '#F6F6E9', fontWeight: 'bold', border: 'none' }}>
+                        All Products
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <div className="text-center">
+                    {connecting && <img src={metamaskLogo} alt="MetaMask Logo" className="rotating-logo" style={{ width: '50px', marginBottom: '1rem' }} />}
+                    <button className="btn btn-primary mt-3" onClick={handleConnectMetaMask} style={{ fontSize: '1rem', padding: '0.5rem 1rem', width: '100%', backgroundColor: '#272727', color: '#F6851B', fontWeight: 'bold', border: 'none' }}>
+                      Connect to MetaMask
+                    </button>
+                  </div>
+                )}
+                <button className="btn btn-secondary mt-3" onClick={handleLogout} style={{ fontSize: '1rem', padding: '0.5rem 1rem', width: '100%', backgroundColor: '#FF0000', color: '#FFFFFF', fontWeight: 'bold', border: 'none' }}>
+                  Logout
                 </button>
-              )}
-              <button className="btn btn-secondary mt-3" onClick={handleLogout}>
-                Logout
-              </button>
+              </div>
             </>
           ) : (
             <p>Please log in as a deployer to connect to MetaMask.</p>
           )}
-          {error && <div className="alert alert-danger mt-2">{error}</div>}
+          {error && <div className="alert alert-danger mt-3 text-center" style={{ fontSize: '1rem', width: '100%' }}>{error}</div>}
         </div>
-      </div>
-      <div className="mt-5">
-        <h2>All Products</h2>
-        {products.length > 0 ? (
-          <ul className="list-group">
-            {products.map((product) => (
-              <li key={product.serialNumber} className="list-group-item">
-                {product.name} - {product.serialNumber}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No products available.</p>
-        )}
       </div>
     </div>
   );

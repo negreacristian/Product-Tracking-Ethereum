@@ -1,19 +1,42 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import logo from '../assets/logo.png'; // Ensure you have a logo image in this path
+import logo from '../assets/logo.png'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Header = ({ handleLogin }) => {
-   useNavigate();
+  const navigate = useNavigate();
+
+  const headerStyles = {
+    backgroundColor: '#457D58',
+      color: '#457D58',
+
+  };
+
+  const buttonStyles = {
+    backgroundColor: '#272727',
+    color: '#457D58',
+    fontSize: '1.2rem',
+    padding: '0.5rem 1.5rem',
+    border: 'none',
+    borderRadius: '5px',
+    fontWeight: 'bold',
+    
+  };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+    <nav className="navbar navbar-expand-lg" style={headerStyles}>
       <div className="container d-flex justify-content-between align-items-center">
         <a className="navbar-brand" href="/">
           <img src={logo} alt="Logo" style={{ height: '80px' }} />
         </a>
         <div>
-          <button className="btn btn-primary" onClick={handleLogin}>Log In</button>
+          <button
+            className="btn"
+            style={buttonStyles}
+            onClick={handleLogin}
+          >
+            Log In
+          </button>
         </div>
       </div>
     </nav>

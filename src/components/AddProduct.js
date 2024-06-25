@@ -10,8 +10,6 @@ const AddProduct = () => {
   const [serialNumber, setSerialNumber] = useState('');
   const [productName, setProductName] = useState('');
   const [productBrand, setProductBrand] = useState('');
-  const [actor, setActor] = useState('');
-  const [location, setLocation] = useState('');
   const [productImage, setProductImage] = useState(null);
   const [productPdf, setProductPdf] = useState(null);
   const [message, setMessage] = useState('');
@@ -19,9 +17,18 @@ const AddProduct = () => {
   const [web3, setWeb3] = useState(null);
   const [contract, setContract] = useState(null);
   const [accounts, setAccounts] = useState([]);
+  const [actor, setActor] = useState('');
+  const [location, setLocation] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Retrieve actor and location from localStorage
+    const profile = JSON.parse(localStorage.getItem('profile'));
+    if (profile) {
+      setActor(profile.role);  // Assuming actor is the role
+      setLocation(profile.location);
+    }
+
     if (window.ethereum) {
       const web3 = new Web3(window.ethereum);
       setWeb3(web3);
@@ -56,10 +63,6 @@ const AddProduct = () => {
 
     const formData = new FormData();
     formData.append('serialNumber', serialNumber);
-    formData.append('name', productName);
-    formData.append('brand', productBrand);
-    formData.append('actor', actor);
-    formData.append('location', location);
     if (productImage) {
       formData.append('image', productImage);
     }
@@ -106,8 +109,6 @@ const AddProduct = () => {
                 setSerialNumber('');
                 setProductName('');
                 setProductBrand('');
-                setActor('');
-                setLocation('');
                 setProductImage(null);
                 setProductPdf(null);
               } else {
@@ -179,26 +180,6 @@ const AddProduct = () => {
                 className="form-control"
                 value={productBrand}
                 onChange={(e) => setProductBrand(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Actor</label>
-              <input
-                type="text"
-                className="form-control"
-                value={actor}
-                onChange={(e) => setActor(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Location</label>
-              <input
-                type="text"
-                className="form-control"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
                 required
               />
             </div>

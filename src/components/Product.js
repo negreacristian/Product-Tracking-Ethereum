@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Web3 from 'web3';
 import contractABI from '../artifacts/contracts/ProGuard.sol/ProGuard.json';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap CSS is imported
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { fetchProductData } from '../utils/fetchData';
 import axios from 'axios';
+import pdfIcon from '../assets/image.png'; // Import the PDF icon image
 
 const Product = ({ jwt, role }) => {
   const { serialNumber } = useParams();
@@ -17,6 +18,7 @@ const Product = ({ jwt, role }) => {
   const [accounts, setAccounts] = useState([]);
   const [showDescription, setShowDescription] = useState(false);
   const [verifierLocation, setVerifierLocation] = useState(null);
+  const [verifying, setVerifying] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,7 +32,7 @@ const Product = ({ jwt, role }) => {
           const contract = new web3.eth.Contract(contractABI.abi, contractAddress);
           setContract(contract);
         })
-        .catch(error => {
+        .catch(() => {
           setMessage('Please install MetaMask!');
         });
     } else {
@@ -41,15 +43,29 @@ const Product = ({ jwt, role }) => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        // Fetch product data from the backend
         const jsonProduct = await fetchProductData(serialNumber);
+        console.log('Data from backend:', jsonProduct);
 
         if (web3 && contract) {
-          // Fetch product data from the blockchain
           const blockchainProduct = await contract.methods.getProduct(serialNumber).call();
-          setProduct({ ...jsonProduct, blockchainData: blockchainProduct });
+          console.log('Data from blockchain:', blockchainProduct);
+
+          setProduct({
+            serialNumber,
+            name: blockchainProduct[1],
+            brand: blockchainProduct[2],
+            history: blockchainProduct[3],
+            image: jsonProduct.image,
+            pdf: jsonProduct.pdf,
+            qrCodeUrl: jsonProduct.qrCodeUrl
+          });
         } else {
-          setProduct(jsonProduct);
+          setProduct({
+            serialNumber,
+            image: jsonProduct.image,
+            pdf: jsonProduct.pdf,
+            qrCodeUrl: jsonProduct.qrCodeUrl
+          });
         }
 
         setLoading(false);
@@ -68,7 +84,6 @@ const Product = ({ jwt, role }) => {
       try {
         const response = await axios.get('https://ipapi.co/json/');
         setVerifierLocation(response.data.city);
-        console.log('Fetched Location:', response.data.city); // Debugging log
       } catch (error) {
         console.error('Error fetching location:', error);
         setMessage('Failed to fetch location');
@@ -79,31 +94,33 @@ const Product = ({ jwt, role }) => {
   }, []);
 
   const handleVerify = async () => {
-    const verifierType = localStorage.getItem('verifierType'); // Retrieve verifier type from local storage
-
-    console.log('Verifier Type:', verifierType); // Debugging log
-    console.log('Verifier Location:', verifierLocation); // Debugging log
+    const verifierType = localStorage.getItem('verifierType');
 
     if (!verifierType || !verifierLocation) {
-      console.error('Invalid verifier role or location');
       setMessage('Invalid verifier role or location');
       return;
     }
 
-    try {
-      await contract.methods.addProductHistory(serialNumber, verifierType, verifierLocation)
-        .send({ from: accounts[0] });
+    setVerifying(true);
 
-      // Fetch the updated product data
+    try {
+      await contract.methods.addProductHistory(serialNumber, verifierType, verifierLocation).send({ from: accounts[0] });
+
       const updatedProduct = await contract.methods.getProduct(serialNumber).call();
+      console.log('Updated product data from blockchain:', updatedProduct);
+
       setProduct(prevState => ({
         ...prevState,
-        blockchainData: updatedProduct
+        name: updatedProduct[1],
+        brand: updatedProduct[2],
+        history: updatedProduct[3]
       }));
       setMessage('Product history updated successfully');
     } catch (error) {
       console.error('Error verifying product:', error);
       setMessage('Error verifying product');
+    } finally {
+      setVerifying(false);
     }
   };
 
@@ -124,7 +141,7 @@ const Product = ({ jwt, role }) => {
   return (
     <div>
       <div className="container mt-5 product-page">
-        <button className="btn btn-outline-secondary me-auto" onClick={() => navigate('/')}>
+        <button className="btn btn-outline-secondary me-auto" onClick={() => navigate(-1)}>
           <i className="bi bi-arrow-left"></i>
         </button>
         <div className="row justify-content-center">
@@ -134,48 +151,52 @@ const Product = ({ jwt, role }) => {
                 src={imageUrl}
                 alt={product.name}
                 className="img-fluid rounded-circle border"
-                style={{ width: '150px', height: '150px', objectFit: 'cover' }}
-                onError={(e) => { e.target.onerror = null; e.target.src = 'http://localhost:5000/uploads/noimg.jpg'; }} // Add a fallback image in case of error
+                style={{ width: '300px', height: '300px', objectFit: 'cover' }}
+                onError={(e) => { e.target.onerror = null; e.target.src = 'http://localhost:5000/uploads/noimg.jpg'; }}
               />
             </div>
             <h1>{product.name}</h1>
-            {product.blockchainData && (
-              <>
-                <p><strong>Deployer:</strong> {product.blockchainData[0]}</p>
-                {product.blockchainData[3] && product.blockchainData[3].map((entry, index) => (
-                  <p key={index}><strong>{entry.actor}:</strong> {entry.location}</p>
-                ))}
-              </>
+            <p><strong>Numar de identificare:</strong> {product.serialNumber}</p>
+            <p><strong>Brand:</strong> {product.brand}</p>
+            {product.history && product.history.map((entry, index) => (
+              <p key={index}>
+                <strong>
+                  {index === 0
+                    ? `Producatorul ${entry.actor} a trimis coletul din ${entry.location}`
+                    : `Produsul a fost verificat de catre ${entry.actor} in ${entry.location}`}
+                </strong>
+              </p>
+            ))}
+            {role === 'verifier' && (
+              <button className="btn btn-success mt-3" onClick={handleVerify} disabled={verifying}>
+                {verifying ? 'Verifying...' : 'Verify'}
+              </button>
             )}
             <button className="btn btn-primary mt-3" onClick={() => setShowDescription(!showDescription)}>
               {showDescription ? 'Hide Description' : 'Show Description'}
             </button>
             {showDescription && (
               <div className="product-description mt-3">
-                <p><strong>Brand:</strong> {product.brand}</p>
-                <p><strong>Lot:</strong> {product.lot}</p>
                 <p>{product.description}</p>
-                {product.qrCodeUrl && (
-                  <div className="mt-3">
-                    <img src={product.qrCodeUrl} alt="QR Code" className="img-fluid" />
-                  </div>
-                )}
+                <div className="d-flex justify-content-center align-items-center">
+                  {product.qrCodeUrl && (
+                    <div className="me-3">
+                      <img src={product.qrCodeUrl} alt="QR Code" className="img-fluid" />
+                    </div>
+                  )}
+                  {product.pdf && (
+                    <a
+                      href={`http://localhost:5000/uploads/${product.pdf}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="d-flex flex-column align-items-center btn btn-link"
+                    >
+                      <img src={pdfIcon} alt="PDF Icon" style={{ width: '100px', height: '100px' }} />
+                      <span style={{ fontSize: '0.8rem', marginTop: '10px', color: 'red' }}>View PDF</span>
+                    </a>
+                  )}
+                </div>
               </div>
-            )}
-            {product.pdf && (
-              <a
-                href={`http://localhost:5000/uploads/${product.pdf}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-link mt-3"
-              >
-                View PDF
-              </a>
-            )}
-            {role === 'verifier' && (
-              <button className="btn btn-success mt-3" onClick={handleVerify}>
-                Verify
-              </button>
             )}
             {message && <div className="alert alert-info mt-2">{message}</div>}
           </div>

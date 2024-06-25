@@ -8,6 +8,7 @@
 }
 
 
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -21,15 +22,6 @@
 
 .App-link {
   color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 #root {
@@ -63,11 +55,22 @@ body, html {
   top: 50%;
   transform: translateY(-50%);
   z-index: 1000; /* Ensure it is above other content */
+  background-color: #272727; /* Background color black */
+  color: #F6F6E9; /* Font color white */
+  border-radius: 5px; /* Rounded corners */
+  padding: 0.5rem 1rem; /* Padding for the button */
+  display: flex;
+  align-items: center;
 }
 
 .back-button i {
-  font-size: 1.2em; /* Adjust the icon size as needed */
+  font-size: 1.6em; /* Adjust the icon size as needed */
+  font-weight: 900; /* Attempt to make the icon bolder */
+  color: #457D58; /* Icon color green */
 }
+
+
+
 .card {
   width: auto;
   max-width: 600px; /* Adjust as needed */
@@ -87,3 +90,13 @@ body, html {
   align-items: center;
   text-align: center;
 }
+
+
+
+
+.card {
+  background-color: #F5F7F8; 
+  color: #000000; 
+ 
+}
+

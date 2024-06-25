@@ -1,15 +1,3 @@
-export const fetchDeployerData = async () => {
-  const response = await fetch('/data/deployerData.json');
-  if (!response.ok) {
-    throw new Error('Failed to fetch deployer data');
-  }
-  const data = await response.json();
-  return data;
-};
-
-
-
-
 export const fetchProductData = async (serialNumber) => {
   const response = await fetch(`http://localhost:5000/api/products/${serialNumber}`);
   if (!response.ok) {

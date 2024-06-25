@@ -109,7 +109,7 @@ const saveProductData = (data) => {
 // Endpoint to add a new product
 app.post('/api/products', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'pdf', maxCount: 1 }]), (req, res) => {
   try {
-    const { serialNumber, name, brand, description, lot } = req.body;
+    const { serialNumber } = req.body;
     const image = req.files && req.files['image'] ? req.files['image'][0].filename : null;
     const pdf = req.files && req.files['pdf'] ? req.files['pdf'][0].filename : null;
     const productUrl = `http://localhost:3000/product/${serialNumber}`;
@@ -123,16 +123,9 @@ app.post('/api/products', upload.fields([{ name: 'image', maxCount: 1 }, { name:
 
       const product = {
         serialNumber,
-        name,
-        brand,
-        description,
-        lot,
         image,
         pdf,
-        qrCodeUrl, // Add QR code URL to product data
-        deployerStatus: 'The product was sent',
-        verifier1Status: 'Not verified yet',
-        verifier2Status: 'Not verified yet'
+        qrCodeUrl
       };
 
       console.log('Product received:', product);
@@ -147,6 +140,7 @@ app.post('/api/products', upload.fields([{ name: 'image', maxCount: 1 }, { name:
     res.status(500).json({ message: 'Error occurred while adding product', error: error.message });
   }
 });
+
 
 // Endpoint to fetch a product by serial number
 app.get('/api/products/:serialNumber', (req, res) => {
