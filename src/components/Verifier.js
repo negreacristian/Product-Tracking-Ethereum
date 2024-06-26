@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { connectMetaMask } from '../utils/metamask';
 import axios from 'axios';
 import logo from '../assets/logo.png';
-import metaLogo from '../assets/meta.png'; // Import the MetaMask logo
+import metaLogo from '../assets/meta.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Verifier = ({ jwt, handleLogout }) => {
   const [account, setAccount] = useState(null);
   const [error, setError] = useState('');
-  const [connecting, setConnecting] = useState(false); // State for connecting
+  const [connecting, setConnecting] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const Verifier = ({ jwt, handleLogout }) => {
 
   const handleConnectMetaMask = async () => {
     try {
-      setConnecting(true); // Set connecting state to true
+      setConnecting(true);
       const connectedAccount = await connectMetaMask();
       setAccount(connectedAccount);
       localStorage.setItem('connectedMetaMaskAccount', connectedAccount);
@@ -69,7 +69,7 @@ const Verifier = ({ jwt, handleLogout }) => {
     } catch (err) {
       setError(err.message);
     } finally {
-      setConnecting(false); // Set connecting state to false
+      setConnecting(false);
     }
   };
 
@@ -83,7 +83,7 @@ const Verifier = ({ jwt, handleLogout }) => {
   };
 
   const handleVerifyProduct = () => {
-    navigate('/scan'); // Redirect to the QR scanner page
+    navigate('/scan');
   };
 
   return (
@@ -100,7 +100,6 @@ const Verifier = ({ jwt, handleLogout }) => {
             <h1 className="card-title" style={{ fontWeight: 'bold' }}>Verifier Page</h1>
             <p style={{ fontWeight: 'bold' }}>Connected account:</p> {account && <p>{account}</p>}
           </div>
-          
           <div className="flex-grow-1"></div>
           {jwt ? (
             <>

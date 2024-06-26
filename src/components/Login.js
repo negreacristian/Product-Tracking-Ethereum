@@ -17,7 +17,6 @@ const Login = ({ setJwt, setRole }) => {
       setJwt(jwtToken);
       setRole(decodedToken.role);
 
-      // Store the token and verifier type in localStorage
       localStorage.setItem('authToken', jwtToken);
       localStorage.setItem('userRole', decodedToken.role);
       if (decodedToken.verifierType) {
@@ -36,10 +35,7 @@ const Login = ({ setJwt, setRole }) => {
 
   return (
     <div>
-      <button
-        className="btn btn-outline-secondary back-button"
-        onClick={() => navigate(-1)}
-      >
+      <button className="btn btn-outline-secondary back-button" onClick={() => navigate(-1)}>
         <i className="bi bi-arrow-left"></i>
       </button>
       <div className="container mt-5">
@@ -51,12 +47,12 @@ const Login = ({ setJwt, setRole }) => {
         <div className="card mx-auto" style={{ maxWidth: '600px', padding: '2rem' }}>
           <div className="card-body d-flex flex-column justify-content-between" style={{ height: '400px', color: '#272727' }}>
             <div className="text-center">
-            <h2 className="mt-3" style={{ fontWeight: 'bold' }}>Log In - JWT</h2>
+              <h2 className="mt-3" style={{ fontWeight: 'bold' }}>Log In - JWT</h2>
             </div>
             <div className="flex-grow-1"></div>
             <div style={{ marginBottom: '5rem' }}>
               <div className="form-group mb-4">
-                <label htmlFor="token">Write your personal Token </label>
+                <label htmlFor="token">Write your personal Token</label>
                 <input
                   type="text"
                   className="form-control"
@@ -74,14 +70,11 @@ const Login = ({ setJwt, setRole }) => {
                 >
                   Log In
                 </button>
-                
               </div>
-            
             </div>
-            {error && <div className="alert alert-danger mt-3 text-center" style={{ fontSize: '1rem'  ,width: '100%'}}>{error}</div>}
+            {error && <div className="alert alert-danger mt-3 text-center" style={{ fontSize: '1rem', width: '100%' }}>{error}</div>}
           </div>
         </div>
-
       </div>
     </div>
   );

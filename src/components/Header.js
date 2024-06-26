@@ -1,15 +1,11 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png'; 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Header = ({ handleLogin }) => {
-  const navigate = useNavigate();
-
   const headerStyles = {
     backgroundColor: '#457D58',
-      color: '#457D58',
-
+    color: '#457D58',
   };
 
   const buttonStyles = {
@@ -20,7 +16,6 @@ const Header = ({ handleLogin }) => {
     border: 'none',
     borderRadius: '5px',
     fontWeight: 'bold',
-    
   };
 
   return (
@@ -30,11 +25,7 @@ const Header = ({ handleLogin }) => {
           <img src={logo} alt="Logo" style={{ height: '80px' }} />
         </a>
         <div>
-          <button
-            className="btn"
-            style={buttonStyles}
-            onClick={handleLogin}
-          >
+          <button className="btn" style={buttonStyles} onClick={handleLogin}>
             Log In
           </button>
         </div>

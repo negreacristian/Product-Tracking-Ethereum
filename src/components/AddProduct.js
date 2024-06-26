@@ -19,7 +19,7 @@ const AddProduct = () => {
   const [accounts, setAccounts] = useState([]);
   const [actor, setActor] = useState('');
   const [location, setLocation] = useState('');
-  const [adding, setAdding] = useState(false); // State for adding
+  const [adding, setAdding] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -35,13 +35,11 @@ const AddProduct = () => {
       window.ethereum.request({ method: 'eth_requestAccounts' })
         .then(accounts => {
           setAccounts(accounts);
-          const contractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3'; // Replace with the actual address
+          const contractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
           const contract = new web3.eth.Contract(contractABI.abi, contractAddress);
           setContract(contract);
-          console.log('Web3, accounts, and contract initialized:', { web3, accounts, contract });
         })
         .catch(error => {
-          console.error('Error initializing Web3, accounts, or contract:', error);
           setMessage('Error initializing Web3, accounts, or contract');
         });
     } else {
@@ -60,7 +58,7 @@ const AddProduct = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage('');
-    setAdding(true); // Set adding state to true
+    setAdding(true);
 
     const formData = new FormData();
     formData.append('serialNumber', serialNumber);
@@ -73,15 +71,6 @@ const AddProduct = () => {
 
     try {
       if (web3 && contract && accounts.length > 0) {
-        console.log('Attempting to register product on blockchain:', {
-          productName,
-          productBrand,
-          serialNumber,
-          actor,
-          location,
-          from: accounts[0]
-        });
-
         contract.methods.registerProduct(
           productName,
           productBrand,
@@ -90,8 +79,6 @@ const AddProduct = () => {
           location
         ).send({ from: accounts[0] })
           .on('receipt', async (receipt) => {
-            console.log('Blockchain transaction receipt:', receipt);
-
             try {
               const response = await fetch('http://localhost:5000/api/products', {
                 method: 'POST',
@@ -103,41 +90,35 @@ const AddProduct = () => {
               if (response.ok) {
                 setMessage('Product added successfully');
                 setQrCodeValue(`http://localhost:3000/product/${serialNumber}`);
-
                 setSerialNumber('');
                 setProductName('');
                 setProductBrand('');
                 setProductImage(null);
                 setProductPdf(null);
               } else {
-                console.error('Failed to add product to local server:', result.message);
                 setMessage(`Failed to add product: ${result.message}`);
               }
             } catch (error) {
-              console.error('Error occurred while adding product to local server:', error);
               setMessage('Error occurred while adding product to local server');
             } finally {
-              setAdding(false); // Set adding state to false
+              setAdding(false);
             }
           })
           .on('error', (error) => {
             if (error.code === 4001) {
-              // User denied transaction signature
               setMessage('Transaction rejected by user.');
             } else {
-              console.error('Error occurred while adding product to blockchain:', error);
               setMessage('Error occurred while adding product to blockchain');
             }
-            setAdding(false); // Set adding state to false
+            setAdding(false);
           });
       } else {
         setMessage('Web3, contract, or accounts not loaded');
-        setAdding(false); // Set adding state to false
+        setAdding(false);
       }
     } catch (error) {
-      console.error('Error occurred while adding product:', error);
       setMessage('Error occurred while adding product');
-      setAdding(false); // Set adding state to false
+      setAdding(false);
     }
   };
 

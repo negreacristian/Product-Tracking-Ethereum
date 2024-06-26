@@ -5,7 +5,7 @@ import contractABI from '../artifacts/contracts/ProGuard.sol/ProGuard.json';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { fetchProductData } from '../utils/fetchData';
 import axios from 'axios';
-import pdfIcon from '../assets/image.png'; // Import the PDF icon image
+import pdfIcon from '../assets/image.png';
 
 const Product = ({ jwt, role }) => {
   const { serialNumber } = useParams();
@@ -28,7 +28,7 @@ const Product = ({ jwt, role }) => {
       window.ethereum.request({ method: 'eth_requestAccounts' })
         .then(accounts => {
           setAccounts(accounts);
-          const contractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3'; // Replace with the actual address
+          const contractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
           const contract = new web3.eth.Contract(contractABI.abi, contractAddress);
           setContract(contract);
         })
@@ -44,11 +44,9 @@ const Product = ({ jwt, role }) => {
     const fetchProduct = async () => {
       try {
         const jsonProduct = await fetchProductData(serialNumber);
-        console.log('Data from backend:', jsonProduct);
 
         if (web3 && contract) {
           const blockchainProduct = await contract.methods.getProduct(serialNumber).call();
-          console.log('Data from blockchain:', blockchainProduct);
 
           setProduct({
             serialNumber,
@@ -57,20 +55,19 @@ const Product = ({ jwt, role }) => {
             history: blockchainProduct[3],
             image: jsonProduct.image,
             pdf: jsonProduct.pdf,
-            qrCodeUrl: jsonProduct.qrCodeUrl
+            qrCodeUrl: jsonProduct.qrCodeUrl,
           });
         } else {
           setProduct({
             serialNumber,
             image: jsonProduct.image,
             pdf: jsonProduct.pdf,
-            qrCodeUrl: jsonProduct.qrCodeUrl
+            qrCodeUrl: jsonProduct.qrCodeUrl,
           });
         }
 
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching product:', error);
         setError(error);
         setLoading(false);
       }
@@ -85,7 +82,6 @@ const Product = ({ jwt, role }) => {
         const response = await axios.get('https://ipapi.co/json/');
         setVerifierLocation(response.data.city);
       } catch (error) {
-        console.error('Error fetching location:', error);
         setMessage('Failed to fetch location');
       }
     };
@@ -107,34 +103,24 @@ const Product = ({ jwt, role }) => {
       await contract.methods.addProductHistory(serialNumber, verifierType, verifierLocation).send({ from: accounts[0] });
 
       const updatedProduct = await contract.methods.getProduct(serialNumber).call();
-      console.log('Updated product data from blockchain:', updatedProduct);
 
       setProduct(prevState => ({
         ...prevState,
         name: updatedProduct[1],
         brand: updatedProduct[2],
-        history: updatedProduct[3]
+        history: updatedProduct[3],
       }));
       setMessage('Product history updated successfully');
     } catch (error) {
-      console.error('Error verifying product:', error);
       setMessage('Error verifying product');
     } finally {
       setVerifying(false);
     }
   };
 
-  if (loading) {
-    return <div className="text-center mt-5">Loading...</div>;
-  }
-
-  if (error) {
-    return <div className="text-center mt-5">Error: {error.message}</div>;
-  }
-
-  if (!product) {
-    return <div className="text-center mt-5">No product found</div>;
-  }
+  if (loading) return <div className="text-center mt-5">Loading...</div>;
+  if (error) return <div className="text-center mt-5">Error: {error.message}</div>;
+  if (!product) return <div className="text-center mt-5">No product found</div>;
 
   const imageUrl = `http://localhost:5000/uploads/${product.image}`;
 

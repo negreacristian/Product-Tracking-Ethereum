@@ -7,7 +7,6 @@ import Footer from './Footer';
 
 const Home = () => {
   const navigate = useNavigate();
- 
 
   function handleLogin() {
     navigate('/login');
@@ -15,7 +14,7 @@ const Home = () => {
 
   return (
     <div>
-      <Header handleLogin={handleLogin}  />
+      <Header handleLogin={handleLogin} />
       <Content />
       <Footer />
     </div>

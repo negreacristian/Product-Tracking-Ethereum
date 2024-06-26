@@ -1,5 +1,3 @@
-// src/components/CustomQrScanner.js
-
 import React, { useRef, useEffect, useState } from 'react';
 import jsQR from 'jsqr';
 

@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { connectMetaMask } from '../utils/metamask';
 import logo from '../assets/logo.png';
-import metamaskLogo from '../assets/meta.png'; // Add the MetaMask logo
+import metamaskLogo from '../assets/meta.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 
 const Deployer = ({ jwt, handleLogout }) => {
   const [account, setAccount] = useState(null);
   const [error, setError] = useState('');
-  const [connecting, setConnecting] = useState(false); // State for connecting
+  const [connecting, setConnecting] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -61,7 +61,7 @@ const Deployer = ({ jwt, handleLogout }) => {
 
   const handleConnectMetaMask = async () => {
     try {
-      setConnecting(true); // Set connecting state to true
+      setConnecting(true);
       const connectedAccount = await connectMetaMask();
       setAccount(connectedAccount);
       localStorage.setItem('connectedMetaMaskAccount', connectedAccount);
@@ -69,7 +69,7 @@ const Deployer = ({ jwt, handleLogout }) => {
     } catch (err) {
       setError(err.message);
     } finally {
-      setConnecting(false); // Set connecting state to false
+      setConnecting(false);
     }
   };
 
@@ -100,11 +100,10 @@ const Deployer = ({ jwt, handleLogout }) => {
       </div>
       <div className="card mx-auto" style={{ maxWidth: '600px', padding: '2rem' }}>
         <div className="card-body d-flex flex-column justify-content-between" style={{ height: '500px', color: '#272727' }}>
-        <div className="text-center">
-        <h1 className="card-title" style={{ fontWeight: 'bold' }}>Producer Page</h1>
-        <p style={{ fontWeight: 'bold' }}>Connected account:</p> {account && <p>{account}</p>}
-      </div>
-        
+          <div className="text-center">
+            <h1 className="card-title" style={{ fontWeight: 'bold' }}>Producer Page</h1>
+            <p style={{ fontWeight: 'bold' }}>Connected account:</p> {account && <p>{account}</p>}
+          </div>
           <div className="flex-grow-1"></div>
           {jwt ? (
             <>

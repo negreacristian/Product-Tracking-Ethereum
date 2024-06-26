@@ -13,10 +13,10 @@ const PORT = 5000;
 app.use(cors());
 app.use(bodyParser.json());
 
-// Serve static files from the 'uploads' directory
+/* Serve static files from the 'uploads' directory */
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-const SECRET_KEY = 'Lucrare_Licenta<>2024-Negrea*Cristian'; // Use a secure key in production
+const SECRET_KEY = 'Lucrare_Licenta<>2024-Negrea*Cristian'; 
 const validTokens = {
   deployerToken123: { role: 'deployer' },
   verifierToken1: { role: 'verifier', verifierType: 'Verifier1' },
@@ -54,7 +54,7 @@ app.get('/protected', (req, res) => {
   });
 });
 
-// Set up storage for Multer to handle file uploads
+/* Set up storage for Multer to handle file uploads */
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const dir = path.join(__dirname, 'uploads');
@@ -70,7 +70,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// Ensure the products.json file exists
+/* Ensure the products.json file exists */
 const productsFilePath = path.resolve(__dirname, 'products.json');
 if (!fs.existsSync(productsFilePath)) {
   fs.writeFileSync(productsFilePath, JSON.stringify([], null, 2));
@@ -79,7 +79,7 @@ if (!fs.existsSync(productsFilePath)) {
   console.log(`File already exists: ${productsFilePath}`);
 }
 
-// Function to save product data to JSON file
+/* Function to save product data to JSON file*/
 const saveProductData = (data) => {
   fs.readFile(productsFilePath, (err, fileData) => {
     if (err) {
@@ -106,15 +106,15 @@ const saveProductData = (data) => {
   });
 };
 
-// Endpoint to add a new product
+/* Endpoint to add a new product  */
 app.post('/api/products', upload.fields([{ name: 'image', maxCount: 1 }, { name: 'pdf', maxCount: 1 }]), (req, res) => {
   try {
     const { serialNumber } = req.body;
     const image = req.files && req.files['image'] ? req.files['image'][0].filename : null;
     const pdf = req.files && req.files['pdf'] ? req.files['pdf'][0].filename : null;
     const productUrl = `http://localhost:3000/product/${serialNumber}`;
-    
-    // Generate QR code URL
+
+    /*  Generate QR code URL */
     QRCode.toDataURL(productUrl, (err, qrCodeUrl) => {
       if (err) {
         console.error('Error generating QR code:', err);
@@ -128,9 +128,7 @@ app.post('/api/products', upload.fields([{ name: 'image', maxCount: 1 }, { name:
         qrCodeUrl
       };
 
-      console.log('Product received:', product);
-
-      // Save the product data to a JSON file
+      ///Save the product data to a JSON file
       saveProductData(product);
 
       res.status(200).json({ message: 'Product added successfully' });
@@ -141,11 +139,9 @@ app.post('/api/products', upload.fields([{ name: 'image', maxCount: 1 }, { name:
   }
 });
 
-
-// Endpoint to fetch a product by serial number
+//endpoint to fetch a product by serial number
 app.get('/api/products/:serialNumber', (req, res) => {
   const { serialNumber } = req.params;
-  const productsFilePath = path.resolve(__dirname, 'products.json');
 
   fs.readFile(productsFilePath, (err, fileData) => {
     if (err) {
@@ -161,15 +157,12 @@ app.get('/api/products/:serialNumber', (req, res) => {
       return res.status(404).json({ message: 'Product not found' });
     }
 
-    console.log('Product found:', product);
     res.json(product);
   });
 });
 
-// Endpoint to fetch all products
+//endpoint to fetch all products
 app.get('/api/products', (req, res) => {
-  const productsFilePath = path.resolve(__dirname, 'products.json');
-
   fs.readFile(productsFilePath, (err, fileData) => {
     if (err) {
       console.error('Error reading product data:', err);
@@ -181,11 +174,10 @@ app.get('/api/products', (req, res) => {
   });
 });
 
-// Endpoint to update the verification status of a product
+/* Endpoint to update the verification status of a product */
 app.put('/api/products/:serialNumber/verify', (req, res) => {
   const { serialNumber } = req.params;
   const { verifier, status } = req.body;
-  const productsFilePath = path.resolve(__dirname, 'products.json');
 
   fs.readFile(productsFilePath, (err, fileData) => {
     if (err) {
@@ -214,7 +206,6 @@ app.put('/api/products/:serialNumber/verify', (req, res) => {
         console.error('Error writing file:', writeErr);
         return res.status(500).json({ message: 'Error updating product data' });
       } else {
-        console.log('Updated verification status for product', serialNumber);
         res.status(200).json({ message: 'Verification status updated' });
       }
     });

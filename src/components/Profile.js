@@ -14,19 +14,15 @@ const Profile = () => {
       try {
         const response = await axios.get('https://ipapi.co/json/');
         setUserLocation(response.data.city);
-        // Save profile information to localStorage
         const profile = { account, role, location: response.data.city };
         localStorage.setItem('profile', JSON.stringify(profile));
       } catch (error) {
-        console.error('Error fetching location:', error);
         setUserLocation('Location not available');
       }
     };
 
     fetchLocation();
   }, [account, role]);
-
-  console.log('Profile State:', location.state); // Debugging log
 
   return (
     <div className="container mt-5">

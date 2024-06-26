@@ -19,7 +19,6 @@ const Content = ({ error }) => {
     fontWeight: 'bold',
   };
 
-
   return (
     <div className='cont_container'>
       <div className="container text-center mt-5">

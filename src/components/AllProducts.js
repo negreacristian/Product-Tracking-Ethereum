@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { fetchAllProducts } from '../utils/fetchData'; // Ensure this function is implemented
-import './AllProducts.css'; // Create and style this CSS file as needed
+import { fetchAllProducts } from '../utils/fetchData';
+import './AllProducts.css';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 
@@ -17,7 +17,6 @@ const AllProducts = () => {
         setProducts(data);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching products:', error);
         setError(error);
         setLoading(false);
       }
@@ -26,13 +25,8 @@ const AllProducts = () => {
     fetchProducts();
   }, []);
 
-  if (loading) {
-    return <div className="text-center mt-5">Loading...</div>;
-  }
-
-  if (error) {
-    return <div className="text-center mt-5">Error: {error.message}</div>;
-  }
+  if (loading) return <div className="text-center mt-5">Loading...</div>;
+  if (error) return <div className="text-center mt-5">Error: {error.message}</div>;
 
   return (
     <div className="container mt-5">
@@ -56,7 +50,7 @@ const AllProducts = () => {
                 src={`http://localhost:5000/uploads/${product.image}`}
                 alt={product.serialNumber}
                 className="card-img-top"
-                style={{ height: '300px', objectFit: 'cover' }} // Adjust height to show more of the image
+                style={{ height: '300px', objectFit: 'cover' }}
               />
               <div className="card-body text-center">
                 <h6 className="card-title" style={{ fontSize: '1rem' }}>SN: {product.serialNumber}</h6>
