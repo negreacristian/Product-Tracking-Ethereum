@@ -3,12 +3,34 @@ import { useNavigate } from 'react-router-dom';
 import { connectMetaMask } from '../utils/metamask';
 import axios from 'axios';
 import logo from '../assets/logo.png';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Ensure Bootstrap CSS is imported
+import metaLogo from '../assets/meta.png'; // Import the MetaMask logo
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Verifier = ({ jwt, handleLogout }) => {
   const [account, setAccount] = useState(null);
   const [error, setError] = useState('');
+  const [connecting, setConnecting] = useState(false); // State for connecting
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchLocation = async () => {
+      try {
+        const response = await axios.get('https://ipapi.co/json/');
+        const profile = {
+          account,
+          role: 'Verifier',
+          location: response.data.city,
+        };
+        localStorage.setItem('profile', JSON.stringify(profile));
+      } catch (error) {
+        console.error('Error fetching location:', error);
+      }
+    };
+
+    if (account) {
+      fetchLocation();
+    }
+  }, [account]);
 
   useEffect(() => {
     const connectedAccount = localStorage.getItem('connectedMetaMaskAccount');
@@ -39,25 +61,24 @@ const Verifier = ({ jwt, handleLogout }) => {
 
   const handleConnectMetaMask = async () => {
     try {
+      setConnecting(true); // Set connecting state to true
       const connectedAccount = await connectMetaMask();
       setAccount(connectedAccount);
       localStorage.setItem('connectedMetaMaskAccount', connectedAccount);
       setError('');
     } catch (err) {
       setError(err.message);
+    } finally {
+      setConnecting(false); // Set connecting state to false
     }
   };
 
-  const handleCheckProfile = async () => {
-    try {
-      const response = await axios.get('https://ipapi.co/json/');
-      const userLocation = response.data.city;
-      localStorage.setItem('verifierType', 'verifier'); // Set verifier type
-      localStorage.setItem('verifierLocation', userLocation); // Set verifier location
-      navigate('profile', { state: { account, role: 'verifier', userLocation } });
-    } catch (error) {
-      console.error('Error fetching location:', error);
-      setError('Failed to fetch location.');
+  const handleCheckProfile = () => {
+    const profile = JSON.parse(localStorage.getItem('profile'));
+    if (profile) {
+      navigate('profile', { state: profile });
+    } else {
+      setError('Profile not available.');
     }
   };
 
@@ -66,50 +87,54 @@ const Verifier = ({ jwt, handleLogout }) => {
   };
 
   return (
-    <div>
-      <button
-        className="btn btn-outline-secondary back-button"
-        onClick={() => navigate('/')}
-      >
+    <div className="container mt-5">
+      <button className="btn btn-outline-secondary back-button" onClick={() => navigate(-1)}>
         <i className="bi bi-arrow-left"></i>
       </button>
-    <div className="container mt-5">
-      <div className="row">
-        <div className="col-11 text-center">
-          <img src={logo} alt="Logo" className="logo mb-3" />
-        </div>
+      <div className="position-relative mb-3">
+        <img src={logo} alt="Logo" className="logo" />
       </div>
-      <div className="card mx-auto" style={{ maxWidth: '500px' }}>
-        <div className="card-body text-center">
-          <h1 className="card-title">Verifier Page</h1>
+      <div className="card mx-auto" style={{ maxWidth: '600px', padding: '2rem' }}>
+        <div className="card-body d-flex flex-column justify-content-between" style={{ height: '500px', color: '#272727' }}>
+          <div className="text-center">
+            <h1 className="card-title" style={{ fontWeight: 'bold' }}>Verifier Page</h1>
+            <p style={{ fontWeight: 'bold' }}>Connected account:</p> {account && <p>{account}</p>}
+          </div>
+          
+          <div className="flex-grow-1"></div>
           {jwt ? (
             <>
-              {account ? (
-                <div>
-                  <p>Connected account: {account}</p>
-                  <button className="btn btn-info m-2" onClick={handleCheckProfile}>
-                    Check Profile
-                  </button>
-                  <button className="btn btn-warning m-2" onClick={handleVerifyProduct}>
-                    Verify Product
-                  </button>
-                </div>
-              ) : (
-                <button className="btn btn-primary m-2" onClick={handleConnectMetaMask}>
-                  Connect to MetaMask
+              <div>
+                {account ? (
+                  <>
+                    <div className="d-flex justify-content-between">
+                      <button className="btn btn-info" onClick={handleCheckProfile} style={{ fontSize: '1rem', padding: '0.5rem 1rem', width: '45%', backgroundColor: '#272727', color: '#F6F6E9', fontWeight: 'bold', border: 'none' }}>
+                        Check Profile
+                      </button>
+                      <button className="btn btn-warning" onClick={handleVerifyProduct} style={{ fontSize: '1rem', padding: '0.5rem 1rem', width: '45%', backgroundColor: '#457D58', color: '#F6F6E9', fontWeight: 'bold', border: 'none' }}>
+                        Verify Product
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <div className="text-center">
+                    {connecting && <img src={metaLogo} alt="MetaMask Logo" style={{ width: '150px', marginBottom: '3rem' }} />}
+                    <button className="btn btn-primary mt-3" onClick={handleConnectMetaMask} style={{ fontSize: '1rem', padding: '0.5rem 1rem', width: '100%', backgroundColor: '#272727', color: '#F6851B', fontWeight: 'bold', border: 'none' }}>
+                      Connect to MetaMask
+                    </button>
+                  </div>
+                )}
+                <button className="btn btn-danger mt-3" onClick={handleLogout} style={{ fontSize: '1rem', padding: '0.5rem 1rem', width: '100%', backgroundColor: '#C40C0C', color: '#FFFFFF', fontWeight: 'bold', border: 'none' }}>
+                  Logout
                 </button>
-              )}
-              <button className="btn btn-secondary mt-4" onClick={handleLogout}>
-                Logout
-              </button>
+              </div>
             </>
           ) : (
             <p>Please log in as a verifier to connect to MetaMask.</p>
           )}
-          {error && <div className="alert alert-danger mt-2">{error}</div>}
+          {error && <div className="alert alert-danger mt-3 text-center" style={{ fontSize: '1rem', width: '100%' }}>{error}</div>}
         </div>
       </div>
-    </div>
     </div>
   );
 };

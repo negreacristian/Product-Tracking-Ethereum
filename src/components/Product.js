@@ -141,42 +141,37 @@ const Product = ({ jwt, role }) => {
   return (
     <div>
       <div className="container mt-5 product-page">
-        <button className="btn btn-outline-secondary me-auto" onClick={() => navigate(-1)}>
+        <button className="btn btn-outline-secondary back-button" onClick={() => navigate(-1)}>
           <i className="bi bi-arrow-left"></i>
         </button>
-        <div className="row justify-content-center">
-          <div className="col-md-6 text-center">
-            <div className="product-image-container mb-3">
-              <img
-                src={imageUrl}
-                alt={product.name}
-                className="img-fluid rounded-circle border"
-                style={{ width: '300px', height: '300px', objectFit: 'cover' }}
-                onError={(e) => { e.target.onerror = null; e.target.src = 'http://localhost:5000/uploads/noimg.jpg'; }}
-              />
+        <div className="card mx-auto" style={{ maxWidth: '600px', padding: '2rem' }}>
+          <div className="card-body d-flex flex-column justify-content-between" style={{ color: '#272727' }}>
+            <div className="text-center">
+              <div className="product-image-container mb-3">
+                <img
+                  src={imageUrl}
+                  alt={product.name}
+                  className="img-fluid rounded-circle border"
+                  style={{ width: '300px', height: '300px', objectFit: 'cover' }}
+                  onError={(e) => { e.target.onerror = null; e.target.src = 'http://localhost:5000/uploads/noimg.jpg'; }}
+                />
+              </div>
+              <h1>{product.name}</h1>
+              <p><strong>Serial Number:</strong> {product.serialNumber}</p>
+              <p><strong>Brand:</strong> {product.brand}</p>
             </div>
-            <h1>{product.name}</h1>
-            <p><strong>Numar de identificare:</strong> {product.serialNumber}</p>
-            <p><strong>Brand:</strong> {product.brand}</p>
-            {product.history && product.history.map((entry, index) => (
-              <p key={index}>
-                <strong>
-                  {index === 0
-                    ? `Producatorul ${entry.actor} a trimis coletul din ${entry.location}`
-                    : `Produsul a fost verificat de catre ${entry.actor} in ${entry.location}`}
-                </strong>
-              </p>
-            ))}
-            {role === 'verifier' && (
-              <button className="btn btn-success mt-3" onClick={handleVerify} disabled={verifying}>
-                {verifying ? 'Verifying...' : 'Verify'}
+            <div className="d-flex justify-content-center mt-3">
+              {role === 'verifier' && (
+                <button className="btn btn-success me-3" onClick={handleVerify} disabled={verifying} style={{ backgroundColor: '#457D58', color: '#F6F6E9', fontWeight: 'bold' }}>
+                  {verifying ? 'Verifying...' : 'Verify'}
+                </button>
+              )}
+              <button className="btn btn-info" onClick={() => setShowDescription(!showDescription)} style={{ backgroundColor: '#272727', color: '#F6F6E9', fontWeight: 'bold', border: 'none' }}>
+                {showDescription ? 'Hide Description' : 'Show Description'}
               </button>
-            )}
-            <button className="btn btn-primary mt-3" onClick={() => setShowDescription(!showDescription)}>
-              {showDescription ? 'Hide Description' : 'Show Description'}
-            </button>
+            </div>
             {showDescription && (
-              <div className="product-description mt-3">
+              <div className="product-description mt-3" style={{ backgroundColor: '#F5F7F8', color: '#272727', padding: '1rem', borderRadius: '5px' }}>
                 <p>{product.description}</p>
                 <div className="d-flex justify-content-center align-items-center">
                   {product.qrCodeUrl && (
@@ -196,9 +191,18 @@ const Product = ({ jwt, role }) => {
                     </a>
                   )}
                 </div>
+                <div className="mt-3 text-start">
+                  {product.history && product.history.map((entry, index) => (
+                    <p key={index}>
+                      {index + 1}. {index === 0
+                        ? <>The manufacturer <strong>{entry.actor}</strong> sent the product from <strong>{entry.location}</strong></>
+                        : <>The product was verified by <strong>{entry.actor}</strong> in <strong>{entry.location}</strong></>}
+                    </p>
+                  ))}
+                </div>
               </div>
             )}
-            {message && <div className="alert alert-info mt-2">{message}</div>}
+            {message && <div className={`alert ${message.includes('Error') ? 'alert-danger' : 'alert-info'} mt-2 text-center`}>{message}</div>}
           </div>
         </div>
       </div>

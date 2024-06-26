@@ -23,13 +23,7 @@
     margin-top: 10px;
   }
   
-  .btn-link {
-    display: block;
-    margin-top: 10px;
-    color: #007bff;
-    text-decoration: none;
-  }
-  
+ 
   .btn-link:hover {
     text-decoration: underline;
   }

@@ -14,7 +14,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 import '@fortawesome/fontawesome-free/css/all.min.css'; 
 import axios from 'axios';
-import ProGuard from './components/Test';
+
 
 const App = () => {
   const [jwt, setJwt] = useState(null);
@@ -65,7 +65,7 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/test" element={<ProGuard jwt={jwt} />} />
+
         <Route path="/" element={<Home jwt={jwt} />} />
         <Route path="/login" element={<Login setJwt={setJwt} setRole={setRole} />} />
         <Route path="/scan" element={<ScanQRCode />} />

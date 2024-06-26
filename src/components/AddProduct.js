@@ -19,13 +19,13 @@ const AddProduct = () => {
   const [accounts, setAccounts] = useState([]);
   const [actor, setActor] = useState('');
   const [location, setLocation] = useState('');
+  const [adding, setAdding] = useState(false); // State for adding
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Retrieve actor and location from localStorage
     const profile = JSON.parse(localStorage.getItem('profile'));
     if (profile) {
-      setActor(profile.role);  // Assuming actor is the role
+      setActor(profile.role);
       setLocation(profile.location);
     }
 
@@ -59,7 +59,8 @@ const AddProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage(''); // Clear any previous messages
+    setMessage('');
+    setAdding(true); // Set adding state to true
 
     const formData = new FormData();
     formData.append('serialNumber', serialNumber);
@@ -71,7 +72,6 @@ const AddProduct = () => {
     }
 
     try {
-      // Interact with the blockchain
       if (web3 && contract && accounts.length > 0) {
         console.log('Attempting to register product on blockchain:', {
           productName,
@@ -92,7 +92,6 @@ const AddProduct = () => {
           .on('receipt', async (receipt) => {
             console.log('Blockchain transaction receipt:', receipt);
 
-            // Blockchain transaction was successful
             try {
               const response = await fetch('http://localhost:5000/api/products', {
                 method: 'POST',
@@ -105,7 +104,6 @@ const AddProduct = () => {
                 setMessage('Product added successfully');
                 setQrCodeValue(`http://localhost:3000/product/${serialNumber}`);
 
-                // Optionally, clear the form
                 setSerialNumber('');
                 setProductName('');
                 setProductBrand('');
@@ -118,18 +116,28 @@ const AddProduct = () => {
             } catch (error) {
               console.error('Error occurred while adding product to local server:', error);
               setMessage('Error occurred while adding product to local server');
+            } finally {
+              setAdding(false); // Set adding state to false
             }
           })
           .on('error', (error) => {
-            console.error('Error occurred while adding product to blockchain:', error);
-            setMessage('Error occurred while adding product to blockchain');
+            if (error.code === 4001) {
+              // User denied transaction signature
+              setMessage('Transaction rejected by user.');
+            } else {
+              console.error('Error occurred while adding product to blockchain:', error);
+              setMessage('Error occurred while adding product to blockchain');
+            }
+            setAdding(false); // Set adding state to false
           });
       } else {
         setMessage('Web3, contract, or accounts not loaded');
+        setAdding(false); // Set adding state to false
       }
     } catch (error) {
       console.error('Error occurred while adding product:', error);
       setMessage('Error occurred while adding product');
+      setAdding(false); // Set adding state to false
     }
   };
 
@@ -149,62 +157,68 @@ const AddProduct = () => {
           </div>
         </div>
       ) : (
-        <div className="card-body">
-          <h1 className="card-title">Add Product</h1>
-          {message && <p>{message}</p>}
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label>Serial Number</label>
-              <input
-                type="text"
-                className="form-control"
-                value={serialNumber}
-                onChange={(e) => setSerialNumber(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Product Name</label>
-              <input
-                type="text"
-                className="form-control"
-                value={productName}
-                onChange={(e) => setProductName(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Product Brand</label>
-              <input
-                type="text"
-                className="form-control"
-                value={productBrand}
-                onChange={(e) => setProductBrand(e.target.value)}
-                required
-              />
-            </div>
-            <div className="form-group">
-              <label>Product Image (optional)</label>
-              <input
-                type="file"
-                className="form-control"
-                onChange={handleImageChange}
-                accept="image/*"
-              />
-            </div>
-            <div className="form-group">
-              <label>Product PDF (optional)</label>
-              <input
-                type="file"
-                className="form-control"
-                onChange={handlePdfChange}
-                accept="application/pdf"
-              />
-            </div>
-            <button type="submit" className="btn btn-primary mt-3">
-              Add Product
-            </button>
-          </form>
+        <div className="card mx-auto" style={{ maxWidth: '600px', padding: '2rem', height: 'auto' }}>
+          <div className="card-body" style={{ height: '100%' }}>
+            <h1 className="card-title" style={{ fontWeight: 'bold', textAlign: 'center' }}>Add Product</h1>
+            {message && (
+              <div className={`alert ${message.toLowerCase().includes('error') || message.toLowerCase().includes('rejected') ? 'alert-danger' : 'alert-info'}`} style={{ marginTop: '1rem' }}>
+                {message}
+              </div>
+            )}
+            <form onSubmit={handleSubmit} style={{ textAlign: 'left' }}>
+              <div className="form-group mb-3">
+                <label>Serial Number</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={serialNumber}
+                  onChange={(e) => setSerialNumber(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group mb-3">
+                <label>Product Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={productName}
+                  onChange={(e) => setProductName(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group mb-3">
+                <label>Product Brand</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={productBrand}
+                  onChange={(e) => setProductBrand(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group mb-3">
+                <label>Product Image (optional)</label>
+                <input
+                  type="file"
+                  className="form-control"
+                  onChange={handleImageChange}
+                  accept="image/*"
+                />
+              </div>
+              <div className="form-group mb-3">
+                <label>Product PDF (optional)</label>
+                <input
+                  type="file"
+                  className="form-control"
+                  onChange={handlePdfChange}
+                  accept="application/pdf"
+                />
+              </div>
+              <button type="submit" className="btn btn-primary" style={{ backgroundColor: '#272727', color: '#F6F6E9', fontWeight: 'bold', border: 'none', width: '100%' }}>
+                {adding ? 'Adding...' : 'Add Product'}
+              </button>
+            </form>
+          </div>
         </div>
       )}
     </div>

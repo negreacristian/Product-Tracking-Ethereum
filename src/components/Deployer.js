@@ -100,10 +100,11 @@ const Deployer = ({ jwt, handleLogout }) => {
       </div>
       <div className="card mx-auto" style={{ maxWidth: '600px', padding: '2rem' }}>
         <div className="card-body d-flex flex-column justify-content-between" style={{ height: '500px', color: '#272727' }}>
-          <div className="text-center">
-            <h1 className="card-title">Producer Page</h1>
-            {account && <p>Connected account: {account}</p>}
-          </div>
+        <div className="text-center">
+        <h1 className="card-title" style={{ fontWeight: 'bold' }}>Producer Page</h1>
+        <p style={{ fontWeight: 'bold' }}>Connected account:</p> {account && <p>{account}</p>}
+      </div>
+        
           <div className="flex-grow-1"></div>
           {jwt ? (
             <>
@@ -124,13 +125,13 @@ const Deployer = ({ jwt, handleLogout }) => {
                   </>
                 ) : (
                   <div className="text-center">
-                    {connecting && <img src={metamaskLogo} alt="MetaMask Logo" className="rotating-logo" style={{ width: '50px', marginBottom: '1rem' }} />}
+                    {connecting && <img src={metamaskLogo} alt="MetaMask Logo" style={{ width: '150px', marginBottom: '3rem' }} />}
                     <button className="btn btn-primary mt-3" onClick={handleConnectMetaMask} style={{ fontSize: '1rem', padding: '0.5rem 1rem', width: '100%', backgroundColor: '#272727', color: '#F6851B', fontWeight: 'bold', border: 'none' }}>
                       Connect to MetaMask
                     </button>
                   </div>
                 )}
-                <button className="btn btn-secondary mt-3" onClick={handleLogout} style={{ fontSize: '1rem', padding: '0.5rem 1rem', width: '100%', backgroundColor: '#FF0000', color: '#FFFFFF', fontWeight: 'bold', border: 'none' }}>
+                <button className="btn btn-secondary mt-3" onClick={handleLogout} style={{ fontSize: '1rem', padding: '0.5rem 1rem', width: '100%', backgroundColor: '#C40C0C', color: '#FFFFFF', fontWeight: 'bold', border: 'none' }}>
                   Logout
                 </button>
               </div>

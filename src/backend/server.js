@@ -19,8 +19,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 const SECRET_KEY = 'Lucrare_Licenta<>2024-Negrea*Cristian'; // Use a secure key in production
 const validTokens = {
   deployerToken123: { role: 'deployer' },
-  verifierToken1: { role: 'verifier', verifierType: 'verifier1' },
-  verifierToken2: { role: 'verifier', verifierType: 'verifier2' }
+  verifierToken1: { role: 'verifier', verifierType: 'Verifier1' },
+  verifierToken2: { role: 'verifier', verifierType: 'Verifier2' }
 };
 
 app.post('/login', (req, res) => {

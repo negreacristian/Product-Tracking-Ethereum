@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Profile = () => {
   const location = useLocation();
-  const { account, role, description } = location.state || {};
+  const { account, role } = location.state || {};
   const [userLocation, setUserLocation] = useState('');
   const navigate = useNavigate();
 
@@ -15,7 +15,7 @@ const Profile = () => {
         const response = await axios.get('https://ipapi.co/json/');
         setUserLocation(response.data.city);
         // Save profile information to localStorage
-        const profile = { account, role, description, location: response.data.city };
+        const profile = { account, role, location: response.data.city };
         localStorage.setItem('profile', JSON.stringify(profile));
       } catch (error) {
         console.error('Error fetching location:', error);
@@ -24,7 +24,7 @@ const Profile = () => {
     };
 
     fetchLocation();
-  }, [account, role, description]);
+  }, [account, role]);
 
   console.log('Profile State:', location.state); // Debugging log
 
@@ -35,14 +35,13 @@ const Profile = () => {
       </button>
       {account ? (
         <div className="card">
-          <div className="card-body">
-            <h1>{role} Profile Page</h1>
-            <p><strong>Account:</strong> {account}</p>
-            <p><strong>Role:</strong> {role}</p>
-            <p><strong>Location:</strong> {userLocation}</p>
-            {role === 'Producer' && (
-              <p><strong>Description:</strong> {description || 'No description available'}</p>
-            )}
+          <div className="card-body d-flex flex-column" style={{ height: '300px' }}>
+            <h1 style={{ fontWeight: 'bold' }}>{role} Profile Page</h1>
+            <div className="mt-auto" style={{ textAlign: 'left' }}>
+              <p><strong>Account:</strong> {account}</p>
+              <p><strong>Role:</strong> {role}</p>
+              <p><strong>Location:</strong> {userLocation}</p>
+            </div>
           </div>
         </div>
       ) : (

@@ -51,11 +51,11 @@ body, html {
 
 .back-button {
   position: absolute;
-  left: 20px; /* Adjust this value as needed */
+  left: 20px; 
   top: 50%;
   transform: translateY(-50%);
-  z-index: 1000; /* Ensure it is above other content */
-  background-color: #272727; /* Background color black */
+  z-index: 1000;
+  background-color: #272727; 
   color: #F6F6E9; /* Font color white */
   border-radius: 5px; /* Rounded corners */
   padding: 0.5rem 1rem; /* Padding for the button */
@@ -66,7 +66,7 @@ body, html {
 .back-button i {
   font-size: 1.6em; /* Adjust the icon size as needed */
   font-weight: 900; /* Attempt to make the icon bolder */
-  color: #457D58; /* Icon color green */
+
 }
 
 
