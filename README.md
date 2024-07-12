@@ -20,7 +20,7 @@ Before you begin, ensure you have met the following requirements:
 
 1. **Clone the Repository**
 
-   git clone https://gitlab.dev.info.uvt.ro/didactic/2024/licenta/IR/licentacristiannegrea2024
+   git clone https://github.com/negreacristian/Product-Tracking-Ethereum
    cd proiect/product-tracking-dapp
 
 2. **Install Server Dependencies**
