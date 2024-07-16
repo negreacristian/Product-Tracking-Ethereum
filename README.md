@@ -6,8 +6,9 @@ A decentralized application for product tracking using blockchain technology. Th
 
 - **Add Product**: Deployer can add new products with images and PDFs.
 - **Verify Product**: Verifier can verify the authenticity of products.
+- **Backend**: REST API for product management.
+- **Authentication**: JWT for secure access to REST API.
 - **Scan QR Code**: Users can scan QR codes to view product details.
-
 ## Prerequisites
 
 Before you begin, ensure you have met the following requirements:
