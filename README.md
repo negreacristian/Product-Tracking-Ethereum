@@ -2,6 +2,14 @@
 
 A decentralized application for product tracking using blockchain technology. This application allows users to add, verify, and view products securely and transparently.
 
+
+
+
+https://github.com/user-attachments/assets/08943abf-a4ba-46aa-9a75-b35734579fff
+
+
+
+
 ## Features
 
 - **Add Product**: Deployer can add new products with images and PDFs.
